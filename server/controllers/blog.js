@@ -46,6 +46,16 @@ export const newblog = async (req, res) => {
       "-" +
       nanoid(3);
 
+    const findBlogBySlug = await Blog.findOne({ slug: slug });
+    const findBlogByTitle = await Blog.findOne({ title: title });
+
+    if (findBlogBySlug || findBlogByTitle) {
+      return res.status(400).json({
+        success: false,
+        message: "Блог с таким заголовком уже существует, поменяйте заголовок",
+      });
+    }
+
     const newBlog = new Blog({
       title,
       slug: slug,
@@ -56,6 +66,15 @@ export const newblog = async (req, res) => {
 
     await newBlog.save();
     res.status(201).json({ success: true, message: "Блог успешно создан" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllBlogs = async (req, res) => {
+  try {
+    const blogs = await Blog.find();
+    res.status(200).json({ success: true, blogs });
   } catch (error) {
     console.log(error);
   }
