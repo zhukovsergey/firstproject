@@ -1,4 +1,6 @@
+import { userAtom } from "@/recoil/atom/userAtom";
 import React from "react";
+import { useRecoilState } from "recoil";
 
 const HomePage = () => {
   return (

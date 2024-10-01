@@ -1,6 +1,7 @@
 import React from "react";
 import BlogHeader from "./BlogHeader";
 import { Outlet } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
 
 const BlogLayout = () => {
   return (
@@ -14,6 +15,7 @@ const BlogLayout = () => {
       <div className="flex-1 flex bg-muted/40 p-6 md:px-8 md:py-4  h-screen bg-gray-100 ">
         <div className="bg-white rounded-lg w-full p-4 shadow-lg">
           <Outlet />
+          <Toaster />
         </div>
       </div>
     </div>
