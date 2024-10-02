@@ -4,6 +4,7 @@ import fs from "fs";
 import sharp from "sharp";
 
 import { translit } from "./../utils/translit.js";
+import { User } from "../models/user.model.js";
 export const newblog = async (req, res) => {
   try {
     if (!req.id) {
@@ -17,7 +18,7 @@ export const newblog = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Файл не был загружен" });
     }
-    const { title, description, content } = req.body;
+    const { title, description, content, category } = req.body;
 
     if (!title || !description || !content) {
       return res
@@ -58,10 +59,11 @@ export const newblog = async (req, res) => {
 
     const newBlog = new Blog({
       title,
-      slug: slug,
+      slug: slug.toLowerCase(),
       description,
       image: `/uploads/${id}/${newFileName}`,
       content,
+      category,
     });
 
     await newBlog.save();
@@ -73,8 +75,78 @@ export const newblog = async (req, res) => {
 
 export const getAllBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find();
+    const blogs = await Blog.find().populate("category");
     res.status(200).json({ success: true, blogs });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const topBlogs = async (req, res) => {
+  try {
+    const topBlogs = await Blog.find().sort({ views: -1 }).limit(5);
+    res.status(200).json({ success: true, topBlogs });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getBlogBySlug = async (req, res) => {
+  try {
+    const blog = await Blog.findOne({ slug: req.params.slug });
+    blog.views++;
+    await blog.save();
+    res.status(200).json({ success: true, blog });
+    if (!blog) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Запись не найдена" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteBlog = async (req, res) => {
+  try {
+    const id = req.id;
+    const user = await User.findOne({ _id: id });
+    if (user.role !== "admin") {
+      return res.status(400).json({ success: false, message: "Вы не админ" });
+    }
+    console.log(user);
+
+    const blog = await Blog.findOne({ slug: req.params.slug });
+    console.log(blog);
+    const folderName = blog.image.split("/").at(-2);
+    const fileName = blog.image.split("/").at(-1);
+    console.log(fileName + "filename");
+    console.log(folderName + "folderName");
+    fs.unlink(`./uploads/${folderName}/${fileName}`, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+    setTimeout(() => {
+      fs.readdir(`./uploads/${folderName}`, (err, files) => {
+        if (err) throw err; // не прочитать содержимое папки
+        console.log("В папке находятся файлы:" + files);
+        if (files.length === 0) {
+          fs.rmdir(`./uploads/${folderName}`, (err) => {
+            if (err) throw err;
+          });
+        }
+      });
+    }, 1000);
+
+    await blog.deleteOne();
+    // fs.rmSync(`./uploads/${blog._id}`, { recursive: true });
+    if (!blog) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Запись не найдена" });
+    }
+    res.status(200).json({ success: true, message: "Запись удалена" });
   } catch (error) {
     console.log(error);
   }

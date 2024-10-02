@@ -7,6 +7,10 @@ const blogSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
     slug: {
       type: String,
       required: true,
@@ -25,6 +29,10 @@ const blogSchema = new mongoose.Schema(
     },
     image: {
       type: String,
+    },
+    views: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

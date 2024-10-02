@@ -8,30 +8,37 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Link } from "react-router-dom";
 const CarouselComponent = ({ blogs }) => {
   return (
-    <Carousel
-      opts={{
-        align: "start",
-      }}
-      orientation="horizontal"
-      className="w-full max-w-xs"
-    >
-      <CarouselContent className="-mt-1 h-[200px]">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index} className="pt-1 md:basis-1/2">
-            <div className="p-1">
-              <Card>
-                <CardContent className="flex items-center justify-center p-6">
-                  <span className="text-3xl font-semibold">{index + 1}</span>
-                </CardContent>
-              </Card>
-            </div>
+    <Carousel className="relative ">
+      <CarouselContent className="">
+        {blogs.map((blog, index) => (
+          <CarouselItem key={index} className="w-full">
+            <Link to={`/blog/${blog.slug}`}>
+              <div className="p-1">
+                <Card>
+                  <CardContent className="w-full">
+                    <div className="relative">
+                      <img
+                        src={`http://localhost:3000` + blogs[index]?.image}
+                        className="w-full h-[400px] object-cover rounded-md hover:scale-105 transition-all duration-300"
+                      />
+                      <div className="absolute bottom-10 left-10  bg-slate-50 line-clamp-2">
+                        <h1 className="text-2xl font-semibold">
+                          {blogs[index]?.title}
+                        </h1>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </Link>
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="mx-4 scale-120" />
+      <CarouselNext className="mx-4" />
     </Carousel>
   );
 };

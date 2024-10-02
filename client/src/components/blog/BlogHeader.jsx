@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { CiCirclePlus } from "react-icons/ci";
+import { LuLayoutPanelLeft } from "react-icons/lu";
+
 import { BiSlideshow } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/imgs/logo.png";
@@ -84,7 +85,10 @@ const BlogHeader = () => {
                 variant="icon"
                 className=""
               >
-                <CiCirclePlus size="34" className="text-white cursor-pointer" />
+                <LuLayoutPanelLeft
+                  size="34"
+                  className="text-white cursor-pointer"
+                />
               </Button>
             </>
           )}

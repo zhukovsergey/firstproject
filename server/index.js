@@ -9,6 +9,7 @@ import upload from "./middlewares/multer.js";
 import fs from "fs";
 import { nanoid } from "nanoid";
 import blogRoute from "./routes/blog.js";
+import categoryRoute from "./routes/category.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use("/api/user", userRoute);
 app.use("/api/blog", blogRoute);
+app.use("/api/category", categoryRoute);
 app.use("/uploads", express.static("uploads"));
 
 //upload files from wysywig

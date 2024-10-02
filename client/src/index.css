@@ -65,3 +65,41 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+ 
+
+  #textEditor > h2, h2{
+      @apply  text-3xl leading-normal font-bold max-md:text-3xl max-md:leading-snug !important;
+  }
+
+  #textEditor h3, h3 {
+      @apply  text-2xl leading-loose max-md:text-2xl max-md:leading-normal !important;
+  }
+
+ 
+
+  #textEditor a, .blog-page-content a{
+      @apply text-purple-300 underline hover:opacity-50;
+  }
+
+  .tag{
+      @apply p-3 bg-indigo-500 rounded-full px-6 capitalize text-white;
+  }
+
+  
+
+  .blog-index{
+      @apply text-4xl sm:text-3xl lg:text-5xl font-bold text-gray-500 leading-none;
+  }
+}
+
+.ce-block__content, .ce-toolbar__content{
+  max-width: 900px;
+}
+
+.cdx-settings-button[data-tune='withBorder'],
+.cdx-settings-button[data-tune='withBackground'],
+.cdx-settings-button[data-tune='stretched'] {
+display: none;
+}

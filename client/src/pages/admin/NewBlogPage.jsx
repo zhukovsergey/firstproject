@@ -8,6 +8,13 @@ import { translate } from "@/components/editor/translate";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const NewBlogPage = () => {
   const ref = useRef();
@@ -15,14 +22,31 @@ const NewBlogPage = () => {
   const [editor, setEditor] = useState();
   const [image, setImage] = useState();
   const [preview, setPreview] = useState();
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     image: "",
     content: null,
+    category: "",
   });
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:3000/api/category/getall",
+          {
+            withCredentials: true,
+          }
+        );
+        setCategories(res.data.categories);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCategories();
     setEditor(
       new EditorJS({
         holder: "editor",
@@ -115,6 +139,22 @@ const NewBlogPage = () => {
             }
             placeholder="Название записи"
           />
+          <Select
+            onValueChange={(value) =>
+              setFormData({ ...formData, category: value })
+            }
+          >
+            <SelectTrigger className="w-[220px]">
+              <SelectValue placeholder="Категория" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((category, index) => (
+                <SelectItem key={index} value={category._id}>
+                  {category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Label>Короткое описание</Label>
           <Input
             onChange={(e) =>
