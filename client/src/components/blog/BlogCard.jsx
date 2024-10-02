@@ -69,9 +69,11 @@ const BlogCard = ({ blog, admin }) => {
             <FaRegEye />
             <span className="text-sm">{blog.views}</span>
           </div>
-          <div className="absolute rounded-lg left-1 top-1 p-1 bg-rose-300 text-white font-semibold text-sm">
-            {blog?.category?.name}
-          </div>
+          {blog.category && (
+            <div className="absolute rounded-lg left-1 top-1 p-1 bg-rose-300 text-white font-semibold text-sm">
+              {blog?.category?.name}
+            </div>
+          )}
 
           <div className="">
             <img
@@ -79,7 +81,10 @@ const BlogCard = ({ blog, admin }) => {
               className="w-[300px] h-[200px] object-cover rounded-md hover:scale-105 transition-all duration-300"
             />
           </div>
-          <p>{blog.description}</p>
+          <p className="text-sm line-clamp-3 w-[300px] h-[65px] my-2">
+            {blog.description}
+          </p>
+          <hr />
           <p className="text-sm text-right text-gray-400 ">
             {getDay(blog.createdAt)}
           </p>

@@ -39,8 +39,13 @@ const BlogPage = () => {
         />
         <meta property="og:site_name" content={"Zhukovka"} />
       </Helmet>
-      <div>
+      <div className="flex flex-col items-center justify-center">
         <h1 className="text-center text-2xl mb-8">{blog?.title}</h1>
+        <img
+          src={`http://localhost:3000${blog.image}`}
+          className="w-[600px] h-[500px] object-cover rounded-md hover:scale-105 transition-all duration-300"
+          alt=""
+        />
         {content.map((item, index) => (
           <BlogContent
             key={index}
