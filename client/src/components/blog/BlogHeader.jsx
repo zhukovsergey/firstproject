@@ -78,7 +78,11 @@ const BlogHeader = () => {
                 Выйти
               </Button>
               <Button variant="icon" className="">
-                <CgProfile size="30" className="text-white cursor-pointer" />
+                <CgProfile
+                  onClick={() => navigate("/user/profile")}
+                  size="30"
+                  className="text-white cursor-pointer"
+                />
               </Button>
               {user?.role === "admin" && (
                 <Button

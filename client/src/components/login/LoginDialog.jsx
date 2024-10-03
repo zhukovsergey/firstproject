@@ -39,9 +39,9 @@ const LoginDialog = ({
           title: "Успешно",
           description: "Вы успешно вошли на сайт",
         });
-
+        console.log(res.data);
         setUser(res.data.user);
-        setShowLoginDialog(false);        
+        setShowLoginDialog(false);
       }
     } catch (error) {
       console.log(error);

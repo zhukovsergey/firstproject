@@ -40,7 +40,7 @@ export const loginUser = async (req, res) => {
       {
         id: user._id,
         role: user.role,
-        userName: user.userName,
+        username: user.userName,
         email: user.email,
       },
       process.env.JWT_SECRET
@@ -52,7 +52,7 @@ export const loginUser = async (req, res) => {
         email: user.email,
         role: user.role,
         id: user._id,
-        userName: user.userName,
+        username: user.username,
       },
     });
   } catch (error) {

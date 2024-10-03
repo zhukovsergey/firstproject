@@ -9,6 +9,7 @@ import { userAtom } from "./recoil/atom/userAtom";
 import BlogPage from "./pages/blog/BlogPage";
 import BlogsPage from "./pages/admin/BlogsPage";
 import CategoriesPage from "./pages/admin/CategoriesPage";
+import ProfilePage from "./pages/user/ProfilePage";
 
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<BlogLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="/user/profile" element={<ProfilePage />} />
           <Route path="/blog/:slug" element={<BlogPage />} />
 
           <Route path="/admin/" element={<AdminLayout />}>

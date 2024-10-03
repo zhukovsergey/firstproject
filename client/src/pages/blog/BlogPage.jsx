@@ -79,6 +79,9 @@ const BlogPage = () => {
           />
         </div>
         <h3 className="text-center">Комментарии</h3>
+        {comments.length == 0 && (
+          <div className="text-center mt-4 text-gray-400">Нет комментариев</div>
+        )}
         <div className="w-full flex flex-col">
           <Comments comments={comments} setComments={setComments} />
         </div>
