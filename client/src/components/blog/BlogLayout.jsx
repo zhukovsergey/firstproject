@@ -2,6 +2,7 @@ import React from "react";
 import BlogHeader from "./BlogHeader";
 import { Outlet } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "./Footer";
 
 const BlogLayout = () => {
   return (
@@ -18,6 +19,9 @@ const BlogLayout = () => {
           <Toaster />
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

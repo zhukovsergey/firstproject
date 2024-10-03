@@ -9,6 +9,13 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { editableBlogAtom } from "@/recoil/atom/editableBlogAtom";
 import { toast } from "@/hooks/use-toast";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+} from "../ui/card";
 const BlogCard = ({ blog, admin }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [editableBlog, setEditableBlog] = useState([]);
@@ -47,27 +54,29 @@ const BlogCard = ({ blog, admin }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-start gap-3 border relative p-3 border-gray-100">
+      <Card className="flex flex-col items-center justify-start gap-3 border relative p-3 border-gray-100">
         {admin && (
-          <div className="absolute top-0 left-0 flex gap-6 items-center">
+          <div className="absolute top-1 left-[70px] flex gap-6 items-center">
             <div className=" ">
               <RiDeleteBinLine
                 onClick={(e) => setShowDeleteDialog(true)}
-                className="text-2xl cursor-pointer text-red-600"
+                className="text-2xl cursor-pointer text-red-600 hover:scale-110"
               />
             </div>
             <div onClick={(e) => editHandle(e, blog.slug, blog)}>
-              <CiEdit className="text-3xl cursor-pointer" />
+              <CiEdit className="text-3xl cursor-pointer hover:scale-110" />
             </div>
           </div>
         )}
 
         <Link to={`/blog/${blog.slug}`}>
-          <h2 className="text-center my-4">{blog.title}</h2>
+          <CardHeader className="text-center text-xl h-[90px] w-[380px] line-clamp-2">
+            {blog.title}
+          </CardHeader>
 
           <div className="absolute top-1 right-1 flex items-center gap-1 justify-center">
-            <FaRegEye />
-            <span className="text-sm">{blog.views}</span>
+            <FaRegEye className="text-gray-400 text-xl" />
+            <span className="text-sm text-gray-400">{blog.views}</span>
           </div>
           {blog.category && (
             <div className="absolute rounded-lg left-1 top-1 p-1 bg-rose-300 text-white font-semibold text-sm">
@@ -75,21 +84,23 @@ const BlogCard = ({ blog, admin }) => {
             </div>
           )}
 
-          <div className="">
+          <CardContent className="">
             <img
               src={`http://localhost:3000` + blog.image}
-              className="w-[300px] h-[200px] object-cover rounded-md hover:scale-105 transition-all duration-300"
+              className="w-[380px] h-[300px] object-cover rounded-md hover:scale-105 transition-all duration-300"
             />
-          </div>
-          <p className="text-sm line-clamp-3 w-[300px] h-[65px] my-2">
-            {blog.description}
-          </p>
-          <hr />
-          <p className="text-sm text-right text-gray-400 ">
-            {getDay(blog.createdAt)}
-          </p>
+          </CardContent>
+          <CardFooter className="flex">
+            <p className="text-sm line-clamp-3 w-[300px] h-[65px] my-2">
+              {blog.description}
+            </p>
+            <hr className="h-[40px] w-[2px] border-gray-100 border-2 mx-2" />
+            <p className="text-sm text-right text-gray-400 ">
+              {getDay(blog.createdAt)}
+            </p>
+          </CardFooter>
         </Link>
-      </div>
+      </Card>
       {admin && showEdit && (
         <EditBlog
           showEdit={showEdit}

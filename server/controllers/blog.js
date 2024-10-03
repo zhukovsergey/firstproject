@@ -5,6 +5,7 @@ import sharp from "sharp";
 
 import { translit } from "./../utils/translit.js";
 import { User } from "../models/user.model.js";
+import { Comment } from "../models/comment.model.js";
 export const newblog = async (req, res) => {
   try {
     if (!req.id) {
@@ -75,7 +76,9 @@ export const newblog = async (req, res) => {
 
 export const getAllBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find().populate("category");
+    const blogs = await Blog.find()
+      .populate("category")
+      .sort({ createdAt: -1 });
     res.status(200).json({ success: true, blogs });
   } catch (error) {
     console.log(error);
@@ -93,7 +96,11 @@ export const topBlogs = async (req, res) => {
 
 export const getBlogBySlug = async (req, res) => {
   try {
-    const blog = await Blog.findOne({ slug: req.params.slug });
+    const blog = await Blog.findOne({ slug: req.params.slug }).populate({
+      path: "comments",
+      options: { sort: { commentedAt: -1 } },
+    });
+
     blog.views++;
     await blog.save();
     res.status(200).json({ success: true, blog });
@@ -147,6 +154,85 @@ export const deleteBlog = async (req, res) => {
         .json({ success: false, message: "Запись не найдена" });
     }
     res.status(200).json({ success: true, message: "Запись удалена" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const likePost = async (req, res) => {
+  const slug = req.params.slug;
+  try {
+    const blog = await Blog.findOne({ slug: slug });
+    if (!blog) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Запись не найдена" });
+    }
+    if (blog.likes.includes(req.id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Вы уже поставили лайк" });
+    }
+    if (blog.dislikes.includes(req.id)) {
+      blog.dislikes.splice(blog.dislikes.indexOf(req.id), 1);
+    }
+
+    blog.likes.push(req.id);
+    await blog.save();
+    res
+      .status(200)
+      .json({ success: true, message: "Блог успешно отмечен", blog });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const dislikePost = async (req, res) => {
+  const slug = req.params.slug;
+  try {
+    const blog = await Blog.findOne({ slug: slug });
+    if (!blog) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Запись не найдена" });
+    }
+    if (blog.likes.includes(req.id)) {
+      blog.likes.splice(blog.likes.indexOf(req.id), 1);
+    }
+    if (blog.dislikes.includes(req.id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Вы уже поставили дизлайк" });
+    }
+    blog.dislikes.push(req.id);
+    await blog.save();
+    res.status(200).json({
+      success: true,
+      message: "Вы поставили дизлайк этой записи",
+      blog,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addCommentToBlog = async (req, res) => {
+  const user = await User.findById(req.id);
+  const { comment, blogId } = req.body;
+  const blog = await Blog.findById(blogId);
+  const newComment = await Comment.create({
+    blog_id: blogId,
+    comment: comment,
+    commented_by: req.id,
+    userName: user.username,
+  });
+  blog.comments.push(newComment._id);
+  await blog.save();
+  res
+    .status(200)
+    .json({ success: true, message: "Комментарий добавлен", newComment });
+  try {
+    console.log(req.body);
   } catch (error) {
     console.log(error);
   }

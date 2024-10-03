@@ -80,16 +80,18 @@ const BlogHeader = () => {
               <Button variant="icon" className="">
                 <CgProfile size="30" className="text-white cursor-pointer" />
               </Button>
-              <Button
-                onClick={() => navigate("/admin/create-blog")}
-                variant="icon"
-                className=""
-              >
-                <LuLayoutPanelLeft
-                  size="34"
-                  className="text-white cursor-pointer"
-                />
-              </Button>
+              {user?.role === "admin" && (
+                <Button
+                  onClick={() => navigate("/admin/create-blog")}
+                  variant="icon"
+                  className=""
+                >
+                  <LuLayoutPanelLeft
+                    size="34"
+                    className="text-white cursor-pointer"
+                  />
+                </Button>
+              )}
             </>
           )}
         </div>
