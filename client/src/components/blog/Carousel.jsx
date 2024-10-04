@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Card, CardContent } from "@/components/ui/card";
+import { Fragment } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -20,7 +21,7 @@ const CarouselComponent = ({ blogs }) => {
     >
       <CarouselContent className="">
         {blogs.map((blog, index) => (
-          <>
+          <Fragment key={index}>
             {index < 4 && (
               <CarouselItem key={index} className="w-full">
                 <Link to={`/blog/${blog.slug}`}>
@@ -44,7 +45,7 @@ const CarouselComponent = ({ blogs }) => {
                 </Link>
               </CarouselItem>
             )}
-          </>
+          </Fragment>
         ))}
       </CarouselContent>
       <CarouselPrevious className="mx-4 scale-120" />

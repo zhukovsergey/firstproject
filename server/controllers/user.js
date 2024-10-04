@@ -29,14 +29,22 @@ export const register = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password);
   try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.json({ message: "Пользователь с таким Email не найден" });
+    const user = await User.findOne({ email: email });
+    console.log(user);
+    if (user === null) {
+      return res.status(404).json({ message: "Пользователь не найден" });
+    }
+    if (!user?.email) {
+      return res.status(404).json({ message: "Пользователь не найден" });
     }
     const checkPassword = await bcrypt.compare(password, user.password);
+
     if (!checkPassword) {
-      return res.json({ message: "Неверный пароль, попробуйте еще раз" });
+      return res
+        .status(400)
+        .json({ message: "Неверный пароль, попробуйте еще раз" });
     }
     const token = jwt.sign(
       {

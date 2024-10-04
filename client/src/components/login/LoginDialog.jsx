@@ -27,7 +27,7 @@ const LoginDialog = ({
   const [user, setUser] = useRecoilState(userAtom);
   const submitLoginForm = async (e) => {
     e.preventDefault();
-
+    console.log(formData);
     try {
       const res = await axios.post(
         "http://localhost:3000/api/user/login",
