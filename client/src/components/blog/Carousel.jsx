@@ -16,7 +16,7 @@ const CarouselComponent = ({ blogs }) => {
       plugins={[plugin.current]}
       className="relative "
       onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
+      onMouseLeave={plugin.current.play}
     >
       <CarouselContent className="">
         {blogs.map((blog, index) => (
