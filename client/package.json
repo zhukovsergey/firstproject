@@ -39,6 +39,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.26.2",
+    "react-timeago": "^7.2.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
     "recoilize": "^3.2.0",

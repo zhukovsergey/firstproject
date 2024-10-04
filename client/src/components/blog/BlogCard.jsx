@@ -16,7 +16,11 @@ import {
   CardFooter,
   CardHeader,
 } from "../ui/card";
+import TimeAgo from "react-timeago";
+import frenchStrings from "react-timeago/lib/language-strings/ru";
+import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
 const BlogCard = ({ blog, admin }) => {
+  const formatter = buildFormatter(frenchStrings);
   const [showEdit, setShowEdit] = useState(false);
   const [editableBlog, setEditableBlog] = useState([]);
   const [test, setTest] = useRecoilState(editableBlogAtom);
@@ -120,12 +124,12 @@ const BlogCard = ({ blog, admin }) => {
             />
           </CardContent>
           <CardFooter className="flex">
-            <p className="text-sm line-clamp-3 w-[300px] h-[65px] my-2">
+            <p className="text-sm line-clamp-3 w-[300px] h-[65px] my-2 flex-1">
               {blog.description}
             </p>
             <hr className="h-[40px] w-[2px] border-gray-100 border-2 mx-2" />
-            <p className="text-sm text-right text-gray-400 ">
-              {getDay(blog.createdAt)}
+            <p className="text-xs text-right text-gray-400 w-12">
+              <TimeAgo date={blog.createdAt} formatter={formatter} />
             </p>
           </CardFooter>
         </Link>

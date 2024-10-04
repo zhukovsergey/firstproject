@@ -72,12 +72,12 @@ const BlogHeader = () => {
           className="cursor-pointer w-[180px]"
         ></img>
       </div>
-      <div>
-        <div className="inline-flex items-center justify-center space-x-2 relative">
+      <div className="flex gap-4 grow ">
+        <div className="inline-flex items-center flex-1 flex-grow justify-center space-x-2 relative max-w-[800px] mx-auto">
           <Input
             type="email"
             placeholder="что искать..."
-            className="md:w-[300px] sm:w-[200px]"
+            className="md:w-full sm:w-[200px]"
             onChange={(e) => setSearchValue(e.target.value)}
             value={searchValue}
           />
@@ -93,7 +93,7 @@ const BlogHeader = () => {
               }}
             >
               <PopoverTrigger></PopoverTrigger>
-              <PopoverContent className="absolute top-6 -left-[370px]">
+              <PopoverContent className="md:w-[500px] sm:w-[350px] absolute top-6 -left-[370px] md:-left-[600px] sm:-left-[370px] xl:w-[600px] xl:-left-[650px] xs:w-[250px] xs:-left-[350px]">
                 <div className="flex flex-col gap-2">
                   {searchedBlogs.map((blog, index) => (
                     <div key={index}>
@@ -109,6 +109,7 @@ const BlogHeader = () => {
                         <Avatar>
                           <AvatarImage
                             src={`http://localhost:3000` + blog?.image}
+                            alt="blog image"
                           />
                           <AvatarFallback>
                             {blog.title[0].toUpperCase()}
@@ -158,10 +159,13 @@ const BlogHeader = () => {
 
               {user?.image && (
                 <Avatar
-                  className="ml-6 cursor-pointer hover:shadow-md "
+                  className="ml-6 cursor-pointer hover:scale-110 transition-all duration-300"
                   onClick={() => navigate("/user/profile")}
                 >
-                  <AvatarImage src={`http://localhost:3000` + user?.image} />
+                  <AvatarImage
+                    className=" rounded-full"
+                    src={`http://localhost:3000` + user?.image}
+                  />
                   <AvatarFallback>
                     {" "}
                     {user?.userName?.slice(0, 2)}
