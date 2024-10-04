@@ -6,6 +6,7 @@ import RatingBlogs from "@/components/blog/RatingBlogs";
 import logo from "../assets/imgs/logo.png";
 
 import Helmet from "react-helmet";
+import AnimationWrapper from "@/common/page-animation";
 
 const HomePage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -38,22 +39,24 @@ const HomePage = () => {
         <meta property="og:url" content={logo} />
         <meta property="og:site_name" content={"Zhukovka"} />
       </Helmet>
-      <div className="flex flex-col flex-wrap gap-4 items-center justify-start w-full">
-        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 w-full ">
-          {/*Топ статей*/}
-          <div className="mx-2">
-            <RatingBlogs />
+      <AnimationWrapper>
+        <div className="flex flex-col flex-wrap gap-4 items-center justify-start w-full">
+          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 w-full ">
+            {/*Топ статей*/}
+            <div className="mx-2">
+              <RatingBlogs />
+            </div>
+            <div className="col-span-2">
+              <CarouselComponent blogs={blogs} />
+            </div>
           </div>
-          <div className="col-span-2">
-            <CarouselComponent blogs={blogs} />
+          <div className="flex flex-wrap gap-4 items-center sm:justify-center md:justify-start">
+            {blogs.map((blog) => (
+              <BlogCard blog={blog} key={blog._id} />
+            ))}
           </div>
         </div>
-        <div className="flex flex-wrap gap-4 items-center sm:justify-center md:justify-start">
-          {blogs.map((blog) => (
-            <BlogCard blog={blog} key={blog._id} />
-          ))}
-        </div>
-      </div>
+      </AnimationWrapper>
     </>
   );
 };

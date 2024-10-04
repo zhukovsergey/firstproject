@@ -10,6 +10,7 @@ import fs from "fs";
 import { nanoid } from "nanoid";
 import blogRoute from "./routes/blog.js";
 import categoryRoute from "./routes/category.js";
+import commentsRoute from "./routes/comments.js";
 
 dotenv.config();
 
@@ -22,10 +23,14 @@ const corsOptions = {
   origin: "http://localhost:5173",
   credentials: true,
 };
+
 app.use(cors(corsOptions));
+
+//ROUTES
 app.use("/api/user", userRoute);
 app.use("/api/blog", blogRoute);
 app.use("/api/category", categoryRoute);
+app.use("/api/comments", commentsRoute);
 app.use("/uploads", express.static("uploads"));
 
 //upload files from wysywig

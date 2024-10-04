@@ -19,14 +19,14 @@ const CarouselComponent = ({ blogs }) => {
               <div className="p-1">
                 <Card>
                   <CardContent className="w-full">
-                    <div className="relative">
+                    <div className="relative w-full overflow-hidden">
                       <img
                         src={`http://localhost:3000` + blogs[index]?.image}
                         className="w-full h-[400px] object-cover rounded-md hover:scale-105 transition-all duration-300"
                       />
-                      <div className="absolute bottom-10 left-10  bg-slate-50 line-clamp-2">
-                        <h1 className="text-2xl font-semibold">
-                          {blogs[index]?.title}
+                      <div className="absolute bottom-10 left-5  rounded-lg  line-clamp-2 w-[90%] ">
+                        <h1 className="text-xl font-semibold px-2 md:text-2xl  mx-2 w-full bg-slate-50/70 rounded-lg line-clamp-2">
+                          {blogs[index]?.title}a
                         </h1>
                       </div>
                     </div>

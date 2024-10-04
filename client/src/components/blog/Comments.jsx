@@ -1,36 +1,103 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getDay } from "@/common/date";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useRecoilState } from "recoil";
+import { userAtom } from "@/recoil/atom/userAtom";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import AnimationWrapper from "@/common/page-animation";
+import { CiCircleRemove } from "react-icons/ci";
 
-const Comments = ({ comments }) => {
-  console.log(comments);
+const Comments = ({ comments, setComments }) => {
+  const [user, setUser] = useRecoilState(userAtom);
+  const params = useParams();
+  const [page, setPage] = useState(null);
+  const [showMoreButton, setShowMoreButton] = useState(true);
+
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const res = await axios.post(
+          `http://localhost:3000/api/comments/allcomments/` + params.slug
+        );
+        if (res.data.success) {
+          setComments(res.data.comments);
+          setPage(res.data.page);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, []);
+
+  const showMoreComments = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        `http://localhost:3000/api/comments/allcomments/` + params.slug,
+        { page: page + 1 }
+      );
+      if (res.data.success) {
+        setComments([...comments, ...res.data.comments]);
+        if (res.data.comments.length < 10) setShowMoreButton(false);
+        console.log(res.data);
+        console.log(res.data.comments.length);
+        setPage(res.data.page);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div>
-      {comments.map((comment, index) => (
-        <div
-          key={index}
-          className="flex flex-col gap-4 items-start mb-2 border-b-[1px] pb-4 border-b-gray-100"
-        >
-          <div className="flex items-center gap-2  ">
+    <AnimationWrapper>
+      <div>
+        {comments.map((comment, index) => (
+          <div
+            key={index}
+            className="group justify-between flex gap-4 items-start mb-2 border-b-[1px] pb-4 border-b-gray-100 hover:bg-gray-50"
+          >
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-2  ">
+                <div>
+                  <Avatar>
+                    <AvatarImage src={`http://localhost:3000` + user?.image} />
+                    <AvatarFallback>
+                      {comment?.userName?.slice(0, 2)}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+                <div className="text-sm">{comment?.userName}</div>
+                <div className="text-sm text-gray-500 text-left">
+                  {getDay(comment?.commentedAt)}
+                </div>
+              </div>
+              <div>
+                <p>{comment.comment}</p>
+              </div>
+            </div>
             <div>
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>
-                  {comment?.userName?.slice(0, 2)}
-                </AvatarFallback>
-              </Avatar>
-            </div>
-            <div className="text-sm">{comment?.userName}</div>
-            <div className="text-sm text-gray-500 text-left">
-              {getDay(comment?.commentedAt)}
+              <CiCircleRemove className="text-red-500 cursor-pointer text-3xl " />
             </div>
           </div>
-          <div>
-            <p>{comment.comment}</p>
+        ))}
+        {showMoreButton && comments.length > 0 && (
+          <div
+            onClick={(e) => {
+              showMoreComments(e);
+            }}
+            className="text-center cursor-pointer text-lg text-gray-500"
+          >
+            Показать еще...
           </div>
-        </div>
-      ))}
-    </div>
+        )}
+        {!showMoreButton && comments.length > 0 && (
+          <div className="text-gray-500 text-center my-2">
+            Все комментарии загружены
+          </div>
+        )}
+      </div>
+    </AnimationWrapper>
   );
 };
 

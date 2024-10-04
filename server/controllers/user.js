@@ -1,6 +1,8 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import sharp from "sharp";
+import fs from "fs";
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -53,6 +55,7 @@ export const loginUser = async (req, res) => {
         role: user.role,
         id: user._id,
         username: user.username,
+        image: user.image,
       },
     });
   } catch (error) {
@@ -76,4 +79,47 @@ export const logoutUser = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const updateUser = async (req, res) => {
+  const { username, email, userId } = req.body;
+  const image = req.file;
+  console.log(userId);
+  const user = await User.findById(userId);
+  if (!user) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Пользователь не найден" });
+  }
+  if (email) user.email = email;
+  if (username) user.username = username;
+  if (image) {
+    if (user.image) {
+      fs.unlinkSync(`.${user.image}`);
+    }
+    const newFileName = `${Date.now()}-${image.originalname}`;
+    await sharp(image.buffer)
+      .resize({
+        width: 800,
+        height: 800,
+        fit: "inside",
+      })
+      .toFormat("webp")
+      .toFile(`./uploads/users/${newFileName}`);
+
+    user.image = `/uploads/users/${newFileName}`;
+  }
+
+  await user.save();
+  res.status(200).json({
+    success: true,
+    message: "Пользователь обновлен",
+    user: {
+      email: user.email,
+      role: user.role,
+      id: user._id,
+      username: user.username,
+      image: user.image,
+    },
+  });
 };

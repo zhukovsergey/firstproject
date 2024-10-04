@@ -14,10 +14,15 @@ import { userAtom } from "@/recoil/atom/userAtom";
 import { TbLogout2 } from "react-icons/tb";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Input } from "../ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 const BlogHeader = () => {
   const [showRegisterDialog, setShowRegisterDialog] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchedBlogs, setSearchedBlogs] = useState([]);
 
   const [user, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();
@@ -32,14 +37,34 @@ const BlogHeader = () => {
           title: "Вы вышли из аккаунта",
         });
       }
-      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const searcheHandler = async (e) => {
+    e.preventDefault();
+    try {
+      if (searchValue === "") {
+        toast({
+          title: "Поле поиска пустое",
+          variant: "destructive",
+        });
+        return;
+      }
+      const res = await axios.post("http://localhost:3000/api/blog/search", {
+        searchValue,
+      });
+      if (res.data.success) {
+        setSearchedBlogs(res.data.blogs);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="px-[60px] flex flex-wrap justify-between items-center bg-gradient-to-r from-purple-500 to-pink-500 mx-6 mt-2 rounded-lg text-xl shadow-lg">
+    <div className="px-[60px] gap-4 flex flex-wrap sm:gap-6 justify-between items-center bg-gradient-to-r from-purple-500 to-pink-500 mx-6 mt-2 rounded-lg text-xl shadow-lg">
       <div>
         <img
           src={logo}
@@ -48,42 +73,102 @@ const BlogHeader = () => {
         ></img>
       </div>
       <div>
+        <div className="inline-flex items-center justify-center space-x-2 relative">
+          <Input
+            type="email"
+            placeholder="что искать..."
+            className="md:w-[300px] sm:w-[200px]"
+            onChange={(e) => setSearchValue(e.target.value)}
+            value={searchValue}
+          />
+          <Button type="submit" onClick={(e) => searcheHandler(e)}>
+            Поиск
+          </Button>
+          {searchedBlogs.length > 0 && (
+            <Popover
+              open={searchedBlogs.length > 0}
+              onOpenChange={() => {
+                setSearchedBlogs([]);
+                setSearchValue("");
+              }}
+            >
+              <PopoverTrigger></PopoverTrigger>
+              <PopoverContent className="absolute top-6 -left-[370px]">
+                <div className="flex flex-col gap-2">
+                  {searchedBlogs.map((blog, index) => (
+                    <div key={index}>
+                      <button
+                        className="w-full flex justify-start gap-2 items-center hover:bg-gray-50 p-2 rounded-md hover:font-semibold hover:px-4 transition-all duration-300 text-lg"
+                        key={blog._id}
+                        onClick={() => {
+                          navigate(`/blog/${blog.slug}`);
+                          setSearchedBlogs([]);
+                          setSearchValue("");
+                        }}
+                      >
+                        <Avatar>
+                          <AvatarImage
+                            src={`http://localhost:3000` + blog?.image}
+                          />
+                          <AvatarFallback>
+                            {blog.title[0].toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        {blog.title}
+                      </button>
+                      <hr className="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+          )}
+        </div>
+      </div>
+      <div>
         <div className="flex gap-4">
-          <Button
+          <button
             onClick={() => navigate("/login")}
             variant="secondary"
-            className="text-md inline-flex gap-2 bg-gray-300 hover:opacity-70 "
+            className="flex gap-2 items-center focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-lg px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
           >
-            <BiSlideshow className="text-rose-700" />
+            <BiSlideshow className="text-white" />
             Шоу
-          </Button>
+          </button>
           {!user?.email && (
-            <Button
+            <button
               onClick={() => setShowLoginDialog(true)}
               variant="secondary"
-              className="text-md inline-flex gap-2 bg-gray-300 hover:opacity-70 "
+              className="flex gap-2 items-center focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-lg px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
             >
-              <CgProfile className="text-rose-700" />
+              <CgProfile className="text-white" />
               Вход
-            </Button>
+            </button>
           )}
           {user?.email && (
             <>
-              <Button
+              <button
                 onClick={() => logout(user)}
-                className="text-md inline-flex gap-2 bg-gray-300 hover:opacity-70 "
-                variant="secondary"
+                type="button"
+                className="flex gap-2 items-center focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-lg px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
               >
-                <TbLogout2 />
                 Выйти
-              </Button>
-              <Button variant="icon" className="">
-                <CgProfile
+                <TbLogout2 />
+              </button>
+
+              {user?.image && (
+                <Avatar
+                  className="ml-6 cursor-pointer hover:shadow-md "
                   onClick={() => navigate("/user/profile")}
-                  size="30"
-                  className="text-white cursor-pointer"
-                />
-              </Button>
+                >
+                  <AvatarImage src={`http://localhost:3000` + user?.image} />
+                  <AvatarFallback>
+                    {" "}
+                    {user?.userName?.slice(0, 2)}
+                  </AvatarFallback>
+                </Avatar>
+              )}
+
               {user?.role === "admin" && (
                 <Button
                   onClick={() => navigate("/admin/create-blog")}
@@ -92,7 +177,7 @@ const BlogHeader = () => {
                 >
                   <LuLayoutPanelLeft
                     size="34"
-                    className="text-white cursor-pointer"
+                    className="text-white cursor-pointer hover:rotate-180 transition-all duration-300"
                   />
                 </Button>
               )}

@@ -7,6 +7,7 @@ import {
   getBlogBySlug,
   likePost,
   newblog,
+  searchBlogs,
   topBlogs,
 } from "../controllers/blog.js";
 import upload from "../middlewares/multer.js";
@@ -25,5 +26,6 @@ router.post("/like/:slug", isAuthenticated, likePost);
 
 router.post("/dislike/:slug", isAuthenticated, dislikePost);
 router.post("/addcomment", isAuthenticated, addCommentToBlog);
+router.post("/search", searchBlogs);
 
 export default router;

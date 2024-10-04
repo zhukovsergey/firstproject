@@ -13,15 +13,13 @@ const SocialPanel = ({ blog, setBlog, setComments, comments }) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [showCommentDialog, setShowCommentDialog] = useState(false);
-  console.log(blog);
+
   useEffect(() => {
     if (blog?.likes?.includes(user?.id)) {
       setLiked(true);
-      console.log("liked");
     }
     if (blog?.dislikes?.includes(user?.id)) {
       setDisliked(true);
-      console.log("disliked");
     }
   }, [blog]);
   const likeHandler = async (blogData) => {

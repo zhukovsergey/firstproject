@@ -26,6 +26,11 @@ export const newblog = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Вы заполнили не все поля" });
     }
+    if (!category) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Вы не выбрали категорию" });
+    }
 
     const newFileName = `${Date.now()}-${image.originalname}`;
     const id = nanoid(4);
@@ -233,6 +238,19 @@ export const addCommentToBlog = async (req, res) => {
     .json({ success: true, message: "Комментарий добавлен", newComment });
   try {
     console.log(req.body);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const searchBlogs = async (req, res) => {
+  console.log(req.body);
+  const { searchValue } = req.body;
+  try {
+    const blogs = await Blog.find({
+      title: { $regex: searchValue, $options: "i" },
+    }).limit(10);
+    res.status(200).json({ success: true, blogs });
   } catch (error) {
     console.log(error);
   }

@@ -52,9 +52,37 @@ const BlogCard = ({ blog, admin }) => {
     }
   };
 
+  const countSymbols = (blog) => {
+    let countSymbols = 0;
+    blog.content.forEach((item) => {
+      if (item.type === "paragraph") {
+        countSymbols += item.data.text.length;
+      }
+    });
+
+    if (countSymbols < 300) {
+      return <>1 минута на прочтение</>;
+    }
+    if (countSymbols > 300) {
+      return <>2 минуты на прочтение</>;
+    }
+    if (countSymbols > 600) {
+      return <>5 минут на прочтение</>;
+    }
+    if (countSymbols > 900) {
+      return <>10 минут на прочтение</>;
+    }
+    if (countSymbols > 1200) {
+      return <>15 минут на прочтение</>;
+    }
+    if (countSymbols > 1900) {
+      return <>20 минут на прочтение</>;
+    }
+  };
+
   return (
     <>
-      <Card className="flex flex-col items-center justify-start gap-3 border relative p-3 border-gray-100">
+      <Card className="flex w-[400px] flex-col items-center justify-start gap-2 border relative p-2 border-gray-100">
         {admin && (
           <div className="absolute top-1 left-[70px] flex gap-6 items-center">
             <div className=" ">
@@ -70,11 +98,12 @@ const BlogCard = ({ blog, admin }) => {
         )}
 
         <Link to={`/blog/${blog.slug}`}>
-          <CardHeader className="text-center text-xl h-[90px] w-[380px] line-clamp-2">
+          <CardHeader className="text-center text-xl h-[90px]  line-clamp-2 w-[400px]">
             {blog.title}
           </CardHeader>
 
-          <div className="absolute top-1 right-1 flex items-center gap-1 justify-center">
+          <div className="absolute top-1 right-1 flex items-center gap-2 justify-center">
+            <div className=" text-sm text-gray-400 ">{countSymbols(blog)}</div>
             <FaRegEye className="text-gray-400 text-xl" />
             <span className="text-sm text-gray-400">{blog.views}</span>
           </div>
