@@ -1,5 +1,8 @@
 import React from "react";
 import logo from "../../assets/imgs/logo.png";
+import dzen from "../../assets/imgs/dzen.svg";
+import { FaTelegramPlane } from "react-icons/fa";
+import axios from "axios";
 const Footer = () => {
   return (
     <footer className="bg-white dark:bg-gray-900">
@@ -13,18 +16,27 @@ const Footer = () => {
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 Соцсети
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="text-gray-500 dark:text-gray-400 font-medium flex flex-col gap-2">
                 <li className="mb-4">
-                  <a href="https://flowbite.com/" className="hover:underline">
-                    Flowbite
+                  <a
+                    href="https://dzen.ru/zhukovkaana"
+                    className="inline-flex items-center hover:underline gap-2"
+                  >
+                    <img
+                      src={dzen}
+                      alt="dzen"
+                      className="w-10 opacity-60 hover:opacity-100"
+                    />
+                    <span>Яндекс дзен</span>
                   </a>
                 </li>
                 <li>
                   <a
                     href="https://tailwindcss.com/"
-                    className="hover:underline"
+                    className="inline-flex items-center hover:underline gap-2"
                   >
-                    Tailwind CSS
+                    <FaTelegramPlane className="text-4xl hover:text-gray-700" />
+                    <span>Телеграм</span>
                   </a>
                 </li>
               </ul>
