@@ -18,7 +18,12 @@ const BlogsPage = () => {
     <div className="flex flex-wrap gap-4 items-center justify-start">
       {blogs.map((blog, index) => (
         <div key={index}>
-          <BlogCard blog={blog} admin={true} />
+          <BlogCard
+            blog={blog}
+            admin={true}
+            setBlogsFromPage={setBlogs}
+            blogsFrompage={blogs}
+          />
         </div>
       ))}
     </div>

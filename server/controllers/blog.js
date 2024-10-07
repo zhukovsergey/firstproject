@@ -6,6 +6,7 @@ import sharp from "sharp";
 import { translit } from "./../utils/translit.js";
 import { User } from "../models/user.model.js";
 import { Comment } from "../models/comment.model.js";
+import { Category } from "../models/category.model.js";
 export const newblog = async (req, res) => {
   try {
     if (!req.id) {
@@ -251,6 +252,57 @@ export const searchBlogs = async (req, res) => {
       title: { $regex: searchValue, $options: "i" },
     }).limit(10);
     res.status(200).json({ success: true, blogs });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const editblog = async (req, res) => {
+  try {
+    const image = req.file;
+    const { blogId, title, description, content, category } = req.body;
+    const blog = await Blog.findOne({ _id: blogId }).populate("category");
+    if (!blog) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Blog not found" });
+    }
+    if (image && blog.image) {
+      const folderName = blog.image.split("/").at(-2);
+      const fileName = blog.image.split("/").at(-1);
+      fs.unlink(`./uploads/${folderName}/${fileName}`, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      const newFileName = `${Date.now()}-${image.originalname}`;
+      const id = nanoid(4);
+      fs.mkdirSync(`./uploads/${id}`, { recursive: true });
+      await sharp(image.buffer)
+        .resize({
+          width: 800,
+          height: 800,
+          fit: "inside",
+        })
+        .toFormat("webp")
+        .toFile(`./uploads/${id}/${newFileName}`);
+
+      blog.image = `/uploads/${id}/${newFileName}`;
+    }
+    console.log(blog);
+    if (title) blog.title = title;
+    if (description) blog.description = description;
+    if (content) blog.content = content;
+    if (category) {
+      Category.findOne({ _id: category }).then((cat) => {
+        blog.category = cat._id;
+        blog.categoryName = cat.name;
+        blog.save();
+      });
+    }
+
+    await blog.save();
+    res.status(200).json({ success: true, blog });
   } catch (error) {
     console.log(error);
   }

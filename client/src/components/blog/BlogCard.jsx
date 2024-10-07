@@ -19,7 +19,7 @@ import {
 import TimeAgo from "react-timeago";
 import frenchStrings from "react-timeago/lib/language-strings/ru";
 import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
-const BlogCard = ({ blog, admin }) => {
+const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
   const formatter = buildFormatter(frenchStrings);
   const [showEdit, setShowEdit] = useState(false);
   const [editableBlog, setEditableBlog] = useState([]);
@@ -58,7 +58,7 @@ const BlogCard = ({ blog, admin }) => {
 
   const countSymbols = (blog) => {
     let countSymbols = 0;
-    blog.content.forEach((item) => {
+    blog?.content.forEach((item) => {
       if (item.type === "paragraph") {
         countSymbols += item.data.text.length;
       }
@@ -88,7 +88,7 @@ const BlogCard = ({ blog, admin }) => {
     <>
       <Card className="flex w-[400px] flex-col items-center justify-start gap-2 border relative p-2 border-gray-100">
         {admin && (
-          <div className="absolute top-1 left-[70px] flex gap-6 items-center">
+          <div className="absolute top-1 left-[80px] flex gap-6 items-center">
             <div className=" ">
               <RiDeleteBinLine
                 onClick={(e) => setShowDeleteDialog(true)}
@@ -101,17 +101,17 @@ const BlogCard = ({ blog, admin }) => {
           </div>
         )}
 
-        <Link to={`/blog/${blog.slug}`}>
+        <Link to={`/blog/${blog?.slug}`}>
           <CardHeader className="text-center text-xl h-[90px]  line-clamp-2 w-[400px]">
-            {blog.title}
+            {blog?.title}
           </CardHeader>
 
           <div className="absolute top-1 right-1 flex items-center gap-2 justify-center">
             <div className=" text-sm text-gray-400 ">{countSymbols(blog)}</div>
             <FaRegEye className="text-gray-400 text-xl" />
-            <span className="text-sm text-gray-400">{blog.views}</span>
+            <span className="text-sm text-gray-400">{blog?.views}</span>
           </div>
-          {blog.category && (
+          {blog?.category && (
             <div className="absolute rounded-lg left-1 top-1 p-1 bg-rose-300 text-white font-semibold text-sm">
               {blog?.category?.name}
             </div>
@@ -119,23 +119,25 @@ const BlogCard = ({ blog, admin }) => {
 
           <CardContent className="">
             <img
-              src={`http://localhost:3000` + blog.image}
+              src={`http://localhost:3000` + blog?.image}
               className="w-[380px] h-[300px] object-cover rounded-md hover:scale-105 transition-all duration-300"
             />
           </CardContent>
           <CardFooter className="flex">
             <p className="text-sm line-clamp-3 w-[300px] h-[65px] my-2 flex-1">
-              {blog.description}
+              {blog?.description}
             </p>
             <hr className="h-[40px] w-[2px] border-gray-100 border-2 mx-2" />
             <p className="text-xs text-right text-gray-400 w-12">
-              <TimeAgo date={blog.createdAt} formatter={formatter} />
+              <TimeAgo date={blog?.createdAt} formatter={formatter} />
             </p>
           </CardFooter>
         </Link>
       </Card>
       {admin && showEdit && (
         <EditBlog
+          setBlogsFromPage={setBlogsFromPage}
+          blogsFrompage={blogsFrompage}
           showEdit={showEdit}
           setShowEdit={setShowEdit}
           editableBlog={editableBlog}
