@@ -5,13 +5,21 @@ import {
   createCategory,
   deleteCategory,
   getAllCategories,
+  updateCategory,
 } from "../controllers/category.js";
+import upload from "../middlewares/multer.js";
 
 const router = express.Router();
 
 router.post("/newcategory", isAuthenticated, createCategory);
 
 router.get("/getall", isAuthenticated, getAllCategories);
+router.put(
+  "/editcategory",
+  upload.single("image"),
+  isAuthenticated,
+  updateCategory
+);
 
 router.delete("/delete/:id", isAuthenticated, deleteCategory);
 

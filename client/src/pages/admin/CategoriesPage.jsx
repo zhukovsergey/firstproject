@@ -7,18 +7,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import noPhoto from "../../assets/imgs/noPhoto.jpeg";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import { MdOutlineModeEdit } from "react-icons/md";
 import { FaCirclePlus } from "react-icons/fa6";
 import { MdDeleteOutline } from "react-icons/md";
+import { MdOutlineAddAPhoto } from "react-icons/md";
 
 const CategoriesPage = () => {
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
   const [formData, setFormData] = useState({});
   const [categories, setCategories] = useState([]);
+  const [showEditCategoryModal, setShowEditCategoryModal] = useState(false);
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -81,6 +87,44 @@ const CategoriesPage = () => {
       console.log(error);
     }
   };
+  const editCategoryHandle = async (e, category) => {
+    e.preventDefault();
+    setShowEditCategoryModal(true);
+    setFormData(category);
+  };
+  const updateCategoryHandle = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    try {
+      const res = await axios.put(
+        "http://localhost:3000/api/category/editcategory",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        toast({
+          title: "Успешно",
+          description: "Категория обновлена",
+        });
+        setCategories(
+          categories.map((category) =>
+            category._id === res.data.category._id
+              ? res.data.category
+              : category
+          )
+        );
+        setShowEditCategoryModal(false);
+        setFormData({});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="relative w-full h-screen flex  ">
       <div className="absolute top-1 right-1">
@@ -120,7 +164,27 @@ const CategoriesPage = () => {
             className="flex gap-6 items-center justify-start mb-4"
           >
             <h1 className="text-lg">{index + 1}</h1>
-            <p className="text-lg w-[300px]">{category.name}</p>
+            {category?.image && (
+              <img
+                className="rounded-full w-[60px] h-[60px] object-cover"
+                src={"http://localhost:3000" + category?.image}
+                alt={category?.name}
+              />
+            )}
+            {!category?.image && (
+              <img
+                className="rounded-full w-[60px] h-[60px] object-cover"
+                src={noPhoto}
+                alt={category?.name}
+              />
+            )}
+
+            <p className="text-lg w-[300px]">{category?.name}</p>
+            <MdOutlineModeEdit
+              size={30}
+              className="cursor-pointer text-gray-600 hover:text-blue-500"
+              onClick={(e) => editCategoryHandle(e, category)}
+            />
             <p>
               <MdDeleteOutline
                 className="text-3xl text-red-500 cursor-pointer"
@@ -130,6 +194,63 @@ const CategoriesPage = () => {
           </div>
         ))}
       </div>
+      <Dialog
+        open={showEditCategoryModal}
+        onOpenChange={setShowEditCategoryModal}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Редактирование категории {formData?.name}</DialogTitle>
+            <DialogDescription></DialogDescription>
+          </DialogHeader>
+          <Label htmlFor="image">
+            {preview ? (
+              <img
+                src={preview}
+                alt="preview"
+                className="w-[200px] h-[200px] object-cover rounded-md mx-auto"
+              />
+            ) : (
+              <>
+                {formData?.image && (
+                  <img
+                    src={`http://localhost:3000` + formData?.image}
+                    alt="preview"
+                    className="w-[200px] h-[200px] object-cover rounded-md"
+                  />
+                )}
+              </>
+            )}
+            {!preview && !formData?.image && (
+              <MdOutlineAddAPhoto
+                size={60}
+                className="mx-auto hover:text-gray-400 cursor-pointer transition-all duration-300"
+              />
+            )}
+          </Label>
+          <Input
+            name="image"
+            id="image"
+            type="file"
+            className="hidden"
+            onChange={(e) => {
+              setFile(e.target.files[0]);
+              setFormData({ ...formData, image: e.target.files[0] });
+              setPreview(URL.createObjectURL(e.target.files[0]));
+            }}
+          />
+          <Label>Название</Label>
+          <Input
+            placeholder="Название категории"
+            name="name"
+            id="name"
+            type="text"
+            defaultValue={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+          <Button onClick={(e) => updateCategoryHandle(e)}>Обновить</Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
