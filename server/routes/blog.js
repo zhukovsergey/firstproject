@@ -5,6 +5,7 @@ import {
   dislikePost,
   editblog,
   getAllBlogs,
+  getBlogByCategory,
   getBlogBySlug,
   likePost,
   newblog,
@@ -29,5 +30,7 @@ router.post("/like/:slug", isAuthenticated, likePost);
 router.post("/dislike/:slug", isAuthenticated, dislikePost);
 router.post("/addcomment", isAuthenticated, addCommentToBlog);
 router.post("/search", searchBlogs);
+
+router.get("/category/:slug", getBlogByCategory);
 
 export default router;

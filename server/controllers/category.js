@@ -1,10 +1,25 @@
 import { Category } from "../models/category.model.js";
 import sharp from "sharp";
+import { translit } from "../utils/translit.js";
+import { nanoid } from "nanoid";
 
 export const createCategory = async (req, res) => {
   const { name } = req.body;
   try {
-    const category = await Category.create({ name });
+    const slug =
+      translit(name)
+        .replace(/[^a-zA-Z0-9]/g, " ")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+        .trim() +
+      "-" +
+      nanoid(3).toLowerCase();
+
+    const category = await Category.create({
+      name,
+      slug,
+    });
+
     res.status(200).json({ success: true, category });
   } catch (error) {
     console.log(error);

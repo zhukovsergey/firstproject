@@ -21,6 +21,7 @@ const Comments = ({ comments, setComments }) => {
           `http://localhost:3000/api/comments/allcomments/` + params.slug
         );
         if (res.data.success) {
+          console.log(res.data);
           setComments(res.data.comments);
           setPage(res.data.page);
         }
@@ -61,7 +62,11 @@ const Comments = ({ comments, setComments }) => {
               <div className="flex items-center gap-2  ">
                 <div>
                   <Avatar>
-                    <AvatarImage src={`http://localhost:3000` + user?.image} />
+                    <AvatarImage
+                      src={
+                        `http://localhost:3000` + comment?.commented_by?.image
+                      }
+                    />
                     <AvatarFallback>
                       {comment?.userName?.slice(0, 2)}
                     </AvatarFallback>
@@ -77,11 +82,14 @@ const Comments = ({ comments, setComments }) => {
               </div>
             </div>
             <div>
-              <CiCircleRemove className="text-red-500 cursor-pointer text-3xl " />
+              {user?._id === comment?.commented_by?._id ||
+                (user?.role === "admin" && (
+                  <CiCircleRemove className="text-red-500 cursor-pointer text-3xl " />
+                ))}
             </div>
           </div>
         ))}
-        {showMoreButton && comments.length > 0 && (
+        {showMoreButton && comments.length > 9 && (
           <div
             onClick={(e) => {
               showMoreComments(e);

@@ -14,6 +14,7 @@ export const getComments = async (req, res) => {
       .sort({
         commentedAt: -1,
       })
+      .populate("commented_by")
       .limit(limit)
       .skip((page - 1) * limit);
     res.status(200).json({ success: true, comments, page, limit });

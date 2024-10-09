@@ -41,7 +41,7 @@ const HomePage = () => {
       </Helmet>
       <AnimationWrapper>
         <div className="flex flex-col flex-wrap gap-4 items-center justify-start w-full">
-          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4 w-full ">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full ">
             {/*Топ статей*/}
             <div className="mx-2">
               <RatingBlogs />

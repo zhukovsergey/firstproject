@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post("/newcategory", isAuthenticated, createCategory);
 
-router.get("/getall", isAuthenticated, getAllCategories);
+router.get("/getall", getAllCategories);
 router.put(
   "/editcategory",
   upload.single("image"),

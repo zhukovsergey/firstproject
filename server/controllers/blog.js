@@ -7,6 +7,7 @@ import { translit } from "./../utils/translit.js";
 import { User } from "../models/user.model.js";
 import { Comment } from "../models/comment.model.js";
 import { Category } from "../models/category.model.js";
+import { Notification } from "../models/notification.model.js";
 export const newblog = async (req, res) => {
   try {
     if (!req.id) {
@@ -71,6 +72,7 @@ export const newblog = async (req, res) => {
       image: `/uploads/${id}/${newFileName}`,
       content,
       category,
+      author: req.id,
     });
 
     await newBlog.save();
@@ -234,6 +236,18 @@ export const addCommentToBlog = async (req, res) => {
   });
   blog.comments.push(newComment._id);
   await blog.save();
+  console.log(blog.author);
+  if (blog.author !== req.id) {
+    const notificaation = await Notification.create({
+      blog: blogId,
+      type: "comment",
+      notification_for: blog.author,
+      comment: newComment._id,
+      seen: false,
+      user: req.id,
+    });
+  }
+
   res
     .status(200)
     .json({ success: true, message: "Комментарий добавлен", newComment });
@@ -297,7 +311,6 @@ export const editblog = async (req, res) => {
       Category.findOne({ _id: category }).then((cat) => {
         blog.category = cat._id;
         blog.categoryName = cat.name;
-        blog.save();
       });
     }
 
@@ -306,4 +319,13 @@ export const editblog = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getBlogByCategory = async (req, res) => {
+  const slug = req.params.slug;
+  const category = await Category.findOne({ slug: slug });
+  const blogs = await Blog.find({ category: category._id }).populate(
+    "category"
+  );
+  res.status(200).json({ success: true, blogs, category });
 };

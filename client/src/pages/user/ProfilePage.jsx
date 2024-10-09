@@ -8,6 +8,7 @@ import AnimationWrapper from "@/common/page-animation";
 import defaultprofile from "../../assets/imgs/defaultprofile.png";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ProfilePage = () => {
   const [user, setUser] = useRecoilState(userAtom);
@@ -53,19 +54,13 @@ const ProfilePage = () => {
             htmlFor="file"
             className="cursor-pointer text-center mx-auto flex flex-col items-center"
           >
-            {previewImage ? (
-              <img
-                src={previewImage}
-                alt="preview"
-                className="w-48 h-48 rounded-full object-cover hover:scale-105 transition-all duration-300"
+            <Avatar className="w-24 h-24">
+              <AvatarImage
+                src={previewImage || "http://localhost:3000" + user?.image}
+                alt="avatar"
               />
-            ) : (
-              <img
-                src={`http://localhost:3000` + user?.image || defaultprofile}
-                alt="preview"
-                className="w-48 h-48 rounded-full object-cover hover:scale-105 transition-all duration-300"
-              />
-            )}
+              <AvatarFallback> {user.username.slice(0, 2)}</AvatarFallback>
+            </Avatar>
 
             <p className="text-sm text-gray-400 mt-2">Изменить фото</p>
           </Label>

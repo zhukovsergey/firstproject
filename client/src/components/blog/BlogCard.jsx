@@ -107,7 +107,9 @@ const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
           </CardHeader>
 
           <div className="absolute top-1 right-1 flex items-center gap-2 justify-center">
-            <div className="text-gray-400 text-xs">{countSymbols(blog)}</div>
+            {!admin && (
+              <div className="text-gray-400 text-xs">{countSymbols(blog)}</div>
+            )}
             <FaRegEye className="text-gray-400 text-xs" />
             <span className="text-xs text-gray-400">{blog?.views}</span>
           </div>

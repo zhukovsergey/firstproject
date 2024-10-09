@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { LuLayoutPanelLeft } from "react-icons/lu";
 
@@ -11,18 +11,30 @@ import { CgProfile } from "react-icons/cg";
 import LoginDialog from "../login/LoginDialog";
 import { useRecoilState } from "recoil";
 import { userAtom } from "@/recoil/atom/userAtom";
+import { notificationsAtom } from "@/recoil/atom/notificationsAtom";
 import { TbLogout2 } from "react-icons/tb";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Input } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { IoMdNotificationsOutline } from "react-icons/io";
 
 const BlogHeader = () => {
   const [showRegisterDialog, setShowRegisterDialog] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [searchedBlogs, setSearchedBlogs] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [notifications, setNotifications] = useRecoilState(notificationsAtom);
 
   const [user, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();
@@ -41,6 +53,20 @@ const BlogHeader = () => {
       console.log(error);
     }
   };
+  const getAllCategories = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/category/getall");
+      if (res.data.success) {
+        setCategories(res.data.categories);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
 
   const searcheHandler = async (e) => {
     e.preventDefault();
@@ -62,6 +88,27 @@ const BlogHeader = () => {
       console.log(error);
     }
   };
+  const getNotificationsForUser = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3000/api/notifications/getallnotifications",
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        setNotifications(res.data.notifications);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    const timer = setInterval(() => {
+      getNotificationsForUser();
+    }, 25000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="px-[60px] gap-4 flex flex-wrap sm:gap-6 justify-between items-center bg-gradient-to-r from-purple-500 to-pink-500 mx-6 mt-2 rounded-lg text-xl shadow-lg">
@@ -128,14 +175,33 @@ const BlogHeader = () => {
       </div>
       <div>
         <div className="flex gap-4">
-          <button
-            onClick={() => navigate("/login")}
-            variant="secondary"
-            className="flex gap-2 items-center focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-lg px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-          >
-            <BiSlideshow className="text-white" />
-            Шоу
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="text-md mb-2 bg-purple-700 text-white rounded-md text-base font-bold p-3 hover:bg-purple-800">
+              Категории
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {categories.map((category) => (
+                <DropdownMenuItem
+                  onClick={() => {
+                    navigate(`/category/${category.slug}`);
+                  }}
+                  key={category._id}
+                  className="flex gap-2 items-center justify-start cursor-pointer min-w-[200px]"
+                >
+                  <Avatar className="w-7 h-6">
+                    <AvatarImage
+                      src={`http://localhost:3000` + category?.image}
+                      alt="category image"
+                    />
+                    <AvatarFallback>
+                      {category.name[0].toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div> {category.name}</div>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           {!user?.email && (
             <button
               onClick={() => setShowLoginDialog(true)}
@@ -157,33 +223,46 @@ const BlogHeader = () => {
                 <TbLogout2 />
               </button>
 
-              {user?.image && (
-                <Avatar
-                  className="ml-6 cursor-pointer hover:scale-110 transition-all duration-300"
-                  onClick={() => navigate("/user/profile")}
-                >
-                  <AvatarImage
-                    className=" rounded-full"
-                    src={`http://localhost:3000` + user?.image}
-                  />
-                  <AvatarFallback>
-                    {" "}
-                    {user?.userName?.slice(0, 2)}
-                  </AvatarFallback>
-                </Avatar>
-              )}
+              <Avatar
+                className="ml-6 cursor-pointer hover:scale-110 transition-all duration-300"
+                onClick={() => navigate("/user/profile")}
+              >
+                <AvatarImage
+                  className=" rounded-full"
+                  src={`http://localhost:3000` + user?.image}
+                />
+                <AvatarFallback> {user?.username?.slice(0, 2)}</AvatarFallback>
+              </Avatar>
 
               {user?.role === "admin" && (
-                <Button
-                  onClick={() => navigate("/admin/create-blog")}
-                  variant="icon"
-                  className=""
-                >
-                  <LuLayoutPanelLeft
-                    size="34"
-                    className="text-white cursor-pointer hover:rotate-180 transition-all duration-300"
-                  />
-                </Button>
+                <>
+                  <Button
+                    onClick={() => navigate("/admin/create-blog")}
+                    variant="icon"
+                    className=""
+                  >
+                    <LuLayoutPanelLeft
+                      size="34"
+                      className="text-white cursor-pointer hover:rotate-180 transition-all duration-300"
+                    />
+                  </Button>
+                  <Button
+                    onClick={() => navigate("/admin/notifications")}
+                    variant="icon"
+                    className="relative inline-flex items-center"
+                  >
+                    <IoMdNotificationsOutline
+                      size="34"
+                      className="text-xl text-white"
+                    />
+
+                    {notifications?.length > 0 && (
+                      <span className="absolute top-0 right-2 p-2 w-3 h-3 bg-red-500 rounded-full text-white flex items-center justify-center text-xs">
+                        {notifications?.length}
+                      </span>
+                    )}
+                  </Button>
+                </>
               )}
             </>
           )}

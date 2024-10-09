@@ -10,6 +10,9 @@ import BlogPage from "./pages/blog/BlogPage";
 import BlogsPage from "./pages/admin/BlogsPage";
 import CategoriesPage from "./pages/admin/CategoriesPage";
 import ProfilePage from "./pages/user/ProfilePage";
+import UsersPage from "./pages/admin/UsersPage";
+import CategoryPage from "./pages/blog/CategoryPage";
+import NotificationsPage from "./pages/admin/NotificationsPage";
 
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -19,12 +22,15 @@ function App() {
       <Routes>
         <Route path="/" element={<BlogLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="/category/:slug" element={<CategoryPage />} />
           <Route path="/user/profile" element={<ProfilePage />} />
           <Route path="/blog/:slug" element={<BlogPage />} />
 
           <Route path="/admin/" element={<AdminLayout />}>
             <Route path="create-blog" element={<NewBlogPage />} />
+            <Route path="users" element={<UsersPage />} />
             <Route path="blogs" element={<BlogsPage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
             <Route path="categories" element={<CategoriesPage />} />
           </Route>
         </Route>

@@ -11,6 +11,7 @@ import { nanoid } from "nanoid";
 import blogRoute from "./routes/blog.js";
 import categoryRoute from "./routes/category.js";
 import commentsRoute from "./routes/comments.js";
+import notificationsRoute from "./routes/notifications.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/api/user", userRoute);
 app.use("/api/blog", blogRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/comments", commentsRoute);
+app.use("/api/notifications", notificationsRoute);
 app.use("/uploads", express.static("uploads"));
 
 //upload files from wysywig

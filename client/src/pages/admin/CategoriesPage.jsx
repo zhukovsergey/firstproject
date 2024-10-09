@@ -17,6 +17,14 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { FaCirclePlus } from "react-icons/fa6";
 import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineAddAPhoto } from "react-icons/md";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const CategoriesPage = () => {
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
@@ -158,42 +166,61 @@ const CategoriesPage = () => {
       </Dialog>
       <div className="w-full">
         <h1 className="my-8 text-center mx-auto">Категории</h1>
-        {categories.map((category, index) => (
-          <div
-            key={category._id}
-            className="flex gap-6 items-center justify-start mb-4"
-          >
-            <h1 className="text-lg">{index + 1}</h1>
-            {category?.image && (
-              <img
-                className="rounded-full w-[60px] h-[60px] object-cover"
-                src={"http://localhost:3000" + category?.image}
-                alt={category?.name}
-              />
-            )}
-            {!category?.image && (
-              <img
-                className="rounded-full w-[60px] h-[60px] object-cover"
-                src={noPhoto}
-                alt={category?.name}
-              />
-            )}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Номер</TableHead>
+              <TableHead>Фото</TableHead>
+              <TableHead>Название</TableHead>
+              <TableHead className="">Редактировать</TableHead>
+              <TableHead className="">Удалить</TableHead>
+            </TableRow>
+          </TableHeader>
+          {categories.map((category, index) => (
+            <TableBody key={category._id} className="">
+              <TableRow>
+                <TableCell className="font-medium">{index + 1}</TableCell>
 
-            <p className="text-lg w-[300px]">{category?.name}</p>
-            <MdOutlineModeEdit
-              size={30}
-              className="cursor-pointer text-gray-600 hover:text-blue-500"
-              onClick={(e) => editCategoryHandle(e, category)}
-            />
-            <p>
-              <MdDeleteOutline
-                className="text-3xl text-red-500 cursor-pointer"
-                onClick={(e) => handleDeleteCategory(e, category._id)}
-              />
-            </p>
-          </div>
-        ))}
+                {category?.image && (
+                  <TableCell>
+                    <img
+                      className="rounded-full w-[60px] h-[60px] object-cover"
+                      src={"http://localhost:3000" + category?.image}
+                      alt={category?.name}
+                    />
+                  </TableCell>
+                )}
+                {!category?.image && (
+                  <TableCell>
+                    <img
+                      className="rounded-full w-[60px] h-[60px] object-cover"
+                      src={noPhoto}
+                      alt={category?.name}
+                    />
+                  </TableCell>
+                )}
+                <TableCell>
+                  <p className="text-lg w-[300px]">{category?.name}</p>
+                </TableCell>
+                <TableCell className=" mx-auto">
+                  <MdOutlineModeEdit
+                    size={30}
+                    className="cursor-pointer text-gray-600 hover:text-blue-500"
+                    onClick={(e) => editCategoryHandle(e, category)}
+                  />
+                </TableCell>
+                <TableCell className="">
+                  <MdDeleteOutline
+                    className="text-3xl text-red-500 cursor-pointer"
+                    onClick={(e) => handleDeleteCategory(e, category._id)}
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ))}
+        </Table>
       </div>
+
       <Dialog
         open={showEditCategoryModal}
         onOpenChange={setShowEditCategoryModal}
