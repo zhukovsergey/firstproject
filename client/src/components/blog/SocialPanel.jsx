@@ -133,7 +133,7 @@ const SocialPanel = ({ blog, setBlog, setComments, comments }) => {
               size="1.6rem"
               className="text-gray-500  cursor-pointer hover:text-gray-600 hover:bg-gray-100 rounded-full"
             />
-            {blog.comments ? blog?.comments?.length : 0}
+            {comments ? comments?.length : 0}
           </div>
         </div>
         <div className="flex gap-2 tems-center">

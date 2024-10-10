@@ -13,6 +13,7 @@ import ProfilePage from "./pages/user/ProfilePage";
 import UsersPage from "./pages/admin/UsersPage";
 import CategoryPage from "./pages/blog/CategoryPage";
 import NotificationsPage from "./pages/admin/NotificationsPage";
+import PanelPage from "./pages/admin/PanelPage";
 
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -27,6 +28,7 @@ function App() {
           <Route path="/blog/:slug" element={<BlogPage />} />
 
           <Route path="/admin/" element={<AdminLayout />}>
+            <Route index element={<PanelPage />} />
             <Route path="create-blog" element={<NewBlogPage />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="blogs" element={<BlogsPage />} />

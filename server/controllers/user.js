@@ -5,6 +5,7 @@ import sharp from "sharp";
 import fs from "fs";
 import { Comment } from "../models/comment.model.js";
 import { Blog } from "../models/blog.model.js";
+import { timeStamp } from "console";
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -136,7 +137,27 @@ export const updateUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   const users = await User.find({ role: "user" });
-  res.status(200).json({ success: true, users });
+  const aggregateUsers = await User.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: new Date(Date.now() - 3600 * 1000 * 1000) },
+      },
+    },
+
+    {
+      $group: {
+        _id: {
+          date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+        },
+        count: { $sum: 1 },
+      },
+    },
+
+    { $limit: 5 },
+  ]).sort({
+    _id: 1,
+  });
+  res.status(200).json({ success: true, users, aggregateUsers });
 };
 
 export const deleteUser = async (req, res) => {

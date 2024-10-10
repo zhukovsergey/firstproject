@@ -9,6 +9,9 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { editableBlogAtom } from "@/recoil/atom/editableBlogAtom";
 import { toast } from "@/hooks/use-toast";
+import { AiOutlineDislike } from "react-icons/ai";
+import { AiOutlineLike } from "react-icons/ai";
+import { FaRegComments } from "react-icons/fa6";
 import {
   Card,
   CardContent,
@@ -19,6 +22,7 @@ import {
 import TimeAgo from "react-timeago";
 import frenchStrings from "react-timeago/lib/language-strings/ru";
 import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
+import SocialPanel from "./SocialPanel";
 const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
   const formatter = buildFormatter(frenchStrings);
   const [showEdit, setShowEdit] = useState(false);
@@ -125,14 +129,31 @@ const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
               className="object-cover mx-auto min-h-[350px] max-h-[350px] rounded-md hover:scale-105 transition-all duration-300"
             />
           </CardContent>
-          <CardFooter className="flex">
-            <p className="text-sm line-clamp-3 h-[65px] my-2 flex-1">
-              {blog?.description}
-            </p>
-            <hr className="h-[40px] w-[2px] border-gray-100 border-2 mx-2" />
-            <p className="text-xs text-right text-gray-400 w-12">
-              <TimeAgo date={blog?.createdAt} formatter={formatter} />
-            </p>
+          <CardFooter className="flex flex-col">
+            <div className="flex flex-row items-center">
+              <p className="text-sm line-clamp-3 h-[65px] my-2 flex-1">
+                {blog?.description}
+              </p>
+              <hr className="h-[40px] w-[2px] border-gray-100 border-2 mx-2" />
+              <p className="text-xs text-right text-gray-400 w-12">
+                <TimeAgo date={blog?.createdAt} formatter={formatter} />
+              </p>
+            </div>
+            <hr className="w-full border-gray-100 border-2" />
+            <div className="flex justify-between  gap-2 w-full mt-2 -mb-2 text-gray-400">
+              <div className=" flex gap-2 items-center text-lg ">
+                <AiOutlineLike />{" "}
+                <span className="text-sm"> {blog?.likes.length} </span>
+              </div>
+              <div className=" flex gap-2 items-center text-lg">
+                <AiOutlineDislike />
+                <span className="text-sm">{blog?.dislikes.length}</span>
+              </div>
+              <div className=" flex gap-2 items-center text-lg">
+                <FaRegComments />{" "}
+                <span className="text-sm">{blog?.comments.length}</span>
+              </div>
+            </div>
           </CardFooter>
         </Link>
       </Card>

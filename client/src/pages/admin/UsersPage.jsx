@@ -33,6 +33,7 @@ const UsersPage = () => {
     const res = await axios.get("http://localhost:3000/api/user/getall", {
       withCredentials: true,
     });
+    console.log(res);
     setUsers(res.data.users);
     console.log(res.data.users);
   };

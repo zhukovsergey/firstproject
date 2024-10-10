@@ -15,12 +15,12 @@ const AdminLayout = () => {
     );
   }
   return (
-    <div className="min-h-screen flex">
-      <div className="w-[250px]">
+    <div className="min-h-screen flex flex-wrap  ">
+      <div className="w-[230px] hidden md:block">
         <AdminSidebar />
       </div>
 
-      <div className="flex-1 flex bg-muted/40 p-6 md:px-8 md:py-4">
+      <div className="md:flex-1 flex bg-muted/40 p-6 md:px-8 md:py-4">
         <Outlet />
       </div>
     </div>

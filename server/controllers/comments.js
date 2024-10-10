@@ -22,3 +22,12 @@ export const getComments = async (req, res) => {
     return res.status(404).send(error);
   }
 };
+
+export const removeComment = async (req, res) => {
+  try {
+    const comment = await Comment.findByIdAndDelete(req.params.id);
+    res.status(200).json({ success: true, comment });
+  } catch (error) {
+    return res.status(404).send(error);
+  }
+};

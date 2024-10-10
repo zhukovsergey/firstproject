@@ -13,10 +13,12 @@ const AdminSidebar = () => {
   const [notifications, setNotifications] = useRecoilState(notificationsAtom);
   return (
     <div className="flex flex-col gap-2 h-screen">
-      <h1 className="text-2xl text-indigo-500 inline-flex justify-center gap-6 items-center">
-        <LuLayoutPanelTop />
-        Панель
-      </h1>
+      <Link to="/admin" className="flex items-center gap-2">
+        <h1 className="text-2xl text-indigo-500 inline-flex justify-center gap-6 items-center">
+          <LuLayoutPanelTop />
+          Панель
+        </h1>
+      </Link>
       <div className="flex flex-col items-center justify-start">
         <Link
           to="/admin/blogs"
