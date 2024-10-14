@@ -226,6 +226,11 @@ export const dislikePost = async (req, res) => {
 
 export const addCommentToBlog = async (req, res) => {
   const user = await User.findById(req.id);
+  if (!user) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Вы не авторизованы" });
+  }
   const { comment, blogId } = req.body;
   const blog = await Blog.findById(blogId);
   const newComment = await Comment.create({

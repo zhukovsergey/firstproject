@@ -12,6 +12,10 @@ import blogRoute from "./routes/blog.js";
 import categoryRoute from "./routes/category.js";
 import commentsRoute from "./routes/comments.js";
 import notificationsRoute from "./routes/notifications.js";
+import { Blog } from "./models/blog.model.js";
+import { SitemapStream, streamToPromise } from "sitemap";
+import { Category } from "./models/category.model.js";
+import { url } from "inspector";
 
 dotenv.config();
 
@@ -90,4 +94,63 @@ app.post("/api/deletefile", async (req, res) => {
   });
 
   console.log(url);
+});
+
+//generating sitemap
+
+app.get("/sitemap.xml", async function (req, res) {
+  const sitemap = new SitemapStream({ hostname: process.env.SERVER_DOMAIN });
+  const urls = [{ url: " /", changefreq: "daily" }];
+  const blogs = await Blog.find();
+  const categories = await Category.find();
+
+  urls.push(
+    ...blogs.map((blog) => {
+      return {
+        url: `/blog/${blog.slug}`,
+        changefreq: "daily",
+        priority: 0.8,
+        lastmod: blog.updatedAt,
+      };
+    })
+  );
+  urls.push(
+    ...categories.map((category) => {
+      return {
+        url: `/category/${category.slug}`,
+        changefreq: "daily",
+        priority: 0.8,
+        lastmod: category.updatedAt,
+      };
+    })
+  );
+
+  urls.forEach((url) => {
+    sitemap.write({
+      url: url.url,
+      changefreq: "daily",
+      priority: 0.8,
+      lastmod: url.lastmod,
+    });
+  });
+  sitemap.end();
+
+  const sitemapOutput = await streamToPromise(sitemap);
+  res.header("Content-Type", "application/xml");
+  res.send(sitemapOutput.toString());
+});
+
+app.get("/robots.txt", (req, res) => {
+  res.set("Content-Type", "text/plain");
+  res.send(`
+    User-agent: *
+    Disallow: /api/
+    Disallow: /user/
+    Disallow: /admin/
+    Disallow: /private/
+    Allow: /public/
+    Allow: /static/
+
+    Sitemap: ${process.env.SERVER_DOMAIN}/sitemap.xml
+  `);
 });

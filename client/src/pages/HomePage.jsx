@@ -69,9 +69,9 @@ const HomePage = () => {
               <span>
                 <TbCategory2 />
               </span>
-              <span>Категории</span>
+              <span className="text-gray-500">Категории</span>
             </div>
-            <div className="flex flex-wrap gap-4 my-4">
+            <div className="flex flex-wrap gap-4 my-4 text-gray-500">
               {categories.map((category) => (
                 <CategoryCard category={category} key={category._id} />
               ))}

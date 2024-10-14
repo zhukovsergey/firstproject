@@ -18,7 +18,7 @@ const RatingBlogs = () => {
 
   return (
     <div>
-      <h1 className="text-center font-bold text-xl mb-4  inline-flex justify-center gap-2 items-center">
+      <h1 className="text-gray-500 text-center font-bold text-xl mb-4  inline-flex justify-center gap-2 items-center">
         Топ статей <FaChartLine />
       </h1>
       <div className="flex-col gap-4 items-center justify-start">

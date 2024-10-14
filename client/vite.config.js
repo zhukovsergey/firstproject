@@ -10,4 +10,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/api": "http://localhost:3000",
+      "/sitemap.xml": "http://localhost:3000",
+
+      // proxy requests to Express server
+    },
+  },
 });
