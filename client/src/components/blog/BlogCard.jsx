@@ -126,6 +126,7 @@ const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
           <CardContent className="">
             <img
               src={`http://localhost:3000` + blog?.image}
+              alt={blog?.title}
               className="object-cover mx-auto min-h-[350px] max-h-[350px] rounded-md hover:scale-105 transition-all duration-300"
             />
           </CardContent>
@@ -140,7 +141,7 @@ const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
               </p>
             </div>
             <hr className="w-full border-gray-100 border-2" />
-            <div className="flex justify-between  gap-2 w-full mt-2 -mb-2 text-gray-400">
+            <div className="flex justify-between  gap-2 w-full mt-2 -mb-2 text-gray-500">
               <div className=" flex gap-2 items-center text-lg ">
                 <AiOutlineLike />{" "}
                 <span className="text-sm"> {blog?.likes.length} </span>

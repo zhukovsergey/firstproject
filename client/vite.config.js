@@ -5,6 +5,9 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  preview: {
+    port: 5173,
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -14,7 +17,7 @@ export default defineConfig({
     proxy: {
       "/api": "http://localhost:3000",
       "/sitemap.xml": "http://localhost:3000",
-
+      "/robots.txt": "http://localhost:3000",
       // proxy requests to Express server
     },
   },

@@ -104,17 +104,20 @@ const BlogHeader = () => {
     }
   };
   useEffect(() => {
-    const timer = setInterval(() => {
-      getNotificationsForUser();
-    }, 25000);
-    return () => clearInterval(timer);
+    if (user) {
+      const timer = setInterval(() => {
+        getNotificationsForUser();
+      }, 25000);
+      return () => clearInterval(timer);
+    }
   }, []);
 
   return (
-    <div className="px-[60px] gap-4 flex flex-wrap sm:gap-6 justify-between items-center bg-gradient-to-r from-purple-500 to-pink-500 mx-6 mt-2 rounded-lg text-xl shadow-lg">
+    <div className="px-[60px] gap-4 flex flex-wrap sm:gap-6 justify-between items-center bg-gradient-to-r from-purple-500 to-pink-500 mx-6 mt-2 rounded-lg text-xl shadow-lg py-4">
       <div>
         <img
           src={logo}
+          alt="logo"
           onClick={() => navigate("/")}
           className="cursor-pointer w-[180px]"
         ></img>

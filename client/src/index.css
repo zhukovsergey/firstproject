@@ -98,7 +98,7 @@
   }
 
   .progress-bar {
-    @apply h-2 origin-left rounded-full bg-indigo-500 fixed top-0 left-0 right-0;   
+    @apply h-1 origin-left rounded-full bg-indigo-500 fixed top-0 left-0 right-0 z-10;   
   }
 
   .blog-index{

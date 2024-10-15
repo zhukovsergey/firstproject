@@ -31,6 +31,7 @@ const RatingBlogs = () => {
               <div className="flex gap-4 items-center line-clamp-1 mb-4">
                 <img
                   src={`http://localhost:3000` + blog.image}
+                  alt={blog.title}
                   className="w-12 h-12 object-cover rounded-full hover:scale-105 transition-all duration-300"
                 />
                 <span
