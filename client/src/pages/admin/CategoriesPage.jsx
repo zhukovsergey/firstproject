@@ -128,6 +128,8 @@ const CategoriesPage = () => {
         );
         setShowEditCategoryModal(false);
         setFormData({});
+        setFile(null);
+        setPreview(null);
       }
     } catch (error) {
       console.log(error);

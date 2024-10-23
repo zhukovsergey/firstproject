@@ -8,6 +8,7 @@ import SocialPanel from "@/components/blog/SocialPanel";
 import AnimationWrapper from "@/common/page-animation";
 import Comments from "@/components/blog/Comments";
 import { Skeleton } from "@/components/ui/skeleton";
+
 const BlogPage = () => {
   const box = useRef();
 
@@ -94,7 +95,7 @@ const BlogPage = () => {
         )}
 
         {!loading && (
-          <div className="mx-[50px] md:mx-[50px] sm:mx-[20px] lg:mx-[90px]">
+          <div className="mx-[50px] md:mx-[50px] sm:mx-[20px] lg:mx-[90px] ">
             <SocialPanel
               blog={blog}
               setBlog={setBlog}

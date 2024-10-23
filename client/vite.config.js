@@ -15,6 +15,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      "/uploads": "http://localhost:3000",
       "/api": "http://localhost:3000",
       "/sitemap.xml": "http://localhost:3000",
       "/robots.txt": "http://localhost:3000",

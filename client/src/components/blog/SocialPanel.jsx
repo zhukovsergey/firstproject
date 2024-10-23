@@ -8,6 +8,16 @@ import { toast } from "@/hooks/use-toast";
 import { BiSolidLike, BiSolidDislike } from "react-icons/bi";
 import CommentDialog from "./CommentDialog";
 import Comments from "./Comments";
+import { CiShare2 } from "react-icons/ci";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import {
+  VKShareButton,
+  VKIcon,
+  TelegramShareButton,
+  TelegramIcon,
+  OKShareButton,
+  OKIcon,
+} from "react-share";
 const SocialPanel = ({ blog, setBlog, setComments, comments }) => {
   const [user, setUser] = useRecoilState(userAtom);
   const [liked, setLiked] = useState(false);
@@ -102,8 +112,9 @@ const SocialPanel = ({ blog, setBlog, setComments, comments }) => {
                 className="text-gray-500 cursor-pointer hover:text-gray-600 hover:bg-gray-100 rounded-full"
               />
             )}
-
-            {blog?.likes ? blog?.likes?.length : 0}
+            <span className="text-sm text-gray-500">
+              {blog?.likes ? blog?.likes?.length : 0}
+            </span>
           </div>
           <div className="flex gap-2 items-center">
             {!disliked ? (
@@ -119,8 +130,9 @@ const SocialPanel = ({ blog, setBlog, setComments, comments }) => {
                 className="text-gray-500 cursor-pointer hover:text-gray-600 hover:bg-gray-100 rounded-full"
               />
             )}
-
-            {blog?.dislikes ? blog?.dislikes?.length : 0}
+            <span className="text-sm text-gray-500">
+              {blog?.dislikes ? blog?.dislikes?.length : 0}
+            </span>
           </div>
           <div
             onClick={() => setShowCommentDialog(true)}
@@ -133,12 +145,49 @@ const SocialPanel = ({ blog, setBlog, setComments, comments }) => {
               size="1.6rem"
               className="text-gray-500  cursor-pointer hover:text-gray-600 hover:bg-gray-100 rounded-full"
             />
-            {comments ? comments?.length : 0}
+            <span className="text-sm text-gray-500">
+              {" "}
+              {comments ? comments?.length : 0}
+            </span>
           </div>
         </div>
-        <div className="flex gap-2 tems-center">
+
+        <div className="flex gap-2 items-center">
           <PiEyeLight size="1.6rem" className="text-gray-500" />
-          {blog?.views}
+          <span className="text-xs text-gray-500">{blog?.views}</span>
+
+          <Popover>
+            <PopoverTrigger>
+              <CiShare2 size="1.6rem" className="text-gray-500" />
+            </PopoverTrigger>
+            <PopoverContent className="flex gap-4 justify-center">
+              <VKShareButton
+                url={`http://localhost:5173/blog/${blog?.slug}`}
+                title={blog?.title}
+                image={
+                  "http://localhost:5173/uploads/BJqA/1729673975077-109296478-66553680-7841-11eb-9eab-a6063f634266.png"
+                }
+                className="Demo__some-network__share-button"
+              >
+                <VKIcon size={32} round />
+              </VKShareButton>
+              <TelegramShareButton
+                url={window.location.href}
+                title={blog?.title}
+                className="Demo__some-network__share-button"
+              >
+                <TelegramIcon size={32} round />
+              </TelegramShareButton>
+              <OKShareButton
+                url={window.location.href}
+                title={blog?.title}
+                className="Demo__some-network__share-button"
+                image="http://localhost:5173/uploads/BJqA/1729673975077-109296478-66553680-7841-11eb-9eab-a6063f634266.png"
+              >
+                <OKIcon size={32} round />
+              </OKShareButton>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
       <CommentDialog
@@ -148,7 +197,6 @@ const SocialPanel = ({ blog, setBlog, setComments, comments }) => {
         showCommentDialog={showCommentDialog}
         setShowCommentDialog={setShowCommentDialog}
       />
-      <div></div>
     </div>
   );
 };
