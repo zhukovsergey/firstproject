@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +16,8 @@ import RegisterDialog from "../register/RegisterDialog";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import EmojiPicker from "emoji-picker-react";
+import { CiFaceSmile } from "react-icons/ci";
 
 const CommentDialog = ({
   showCommentDialog,
@@ -27,8 +29,12 @@ const CommentDialog = ({
   const [user, setUser] = useRecoilState(userAtom);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [showRegisterDialog, setShowRegisterDialog] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState();
+  const [comment, setComment] = useState("");
+  const [choosenEmoji, setChoosenEmoji] = useState(null);
 
+  const [showEmoji, setShowEmoji] = useState(false);
+  const inputRef = useRef(null);
   const commentSubmitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -36,7 +42,7 @@ const CommentDialog = ({
         "http://localhost:3000/api/blog/addcomment",
         {
           blogId: blog._id,
-          comment: formData.comment,
+          comment: comment,
         },
         { withCredentials: true }
       );
@@ -52,6 +58,17 @@ const CommentDialog = ({
       console.log(error);
     }
   };
+
+  const onEmojiClick = (emojiObject, event) => {
+    const cursorPosition = inputRef.current.selectionStart;
+    console.log(cursorPosition);
+    setComment(
+      (prev) =>
+        prev.slice(0, cursorPosition) +
+        emojiObject.emoji +
+        prev.slice(cursorPosition)
+    );
+  };
   return (
     <>
       {user ? (
@@ -63,11 +80,37 @@ const CommentDialog = ({
                 <DialogDescription></DialogDescription>
               </DialogHeader>
               <Label>Комментарий</Label>
-              <Input
-                placeholder="Комментарий"
-                onChange={(e) =>
-                  setFormData({ ...formData, comment: e.target.value })
-                }
+              <div className="relative">
+                <Input
+                  ref={inputRef}
+                  className="rounded-lg pr-8"
+                  name="comment"
+                  value={comment}
+                  placeholder="Комментарий"
+                  onChange={(e) => {
+                    setComment(e.target.value);
+                  }}
+                />
+                <CiFaceSmile
+                  className="w-6 h-6 cursor-pointer absolute right-2 top-1/2 -translate-y-1/2"
+                  onClick={() => setShowEmoji(!showEmoji)}
+                />
+              </div>
+              <EmojiPicker
+                open={showEmoji}
+                categories={[
+                  {
+                    category: "smileys_people",
+                    name: "Смайлы",
+                  },
+                ]}
+                onEmojiClick={onEmojiClick}
+                searchDisabled={true}
+                emojiStyle={"apple"}
+                skinTonesDisabled={true}
+                emojiTooltip={true}
+                lazyLoadEmojis={true}
+                suggestedEmojisMode={"recent"}
               />
               <Button onClick={(e) => commentSubmitHandler(e)}>
                 Отправить

@@ -5,7 +5,7 @@ import Header from "@editorjs/header";
 import Quote from "@editorjs/quote";
 import Marker from "@editorjs/marker";
 import InlineCode from "@editorjs/inline-code";
-import Link from "@editorjs/link";
+import LinkTool from "@editorjs/link";
 import ImageTool from "@pawritharya/editorjs-image-tool-delete";
 
 import fileUpload, { deleteImageFromServer } from "@/common/aws";
@@ -23,12 +23,17 @@ const uploadImageByFile = (e) => {
 };
 
 export const tools = {
-  embed: Embed,
   list: {
     class: List,
     inlineToolbar: true,
   },
-  link: Link,
+
+  link: {
+    class: LinkTool,
+    config: {
+      endpoint: "http://localhost:3000/api/parse",
+    },
+  },
   image: {
     class: ImageTool,
     config: {
@@ -43,10 +48,33 @@ export const tools = {
   },
   header: {
     class: Header,
+    /**
+     * This property will override the common settings
+     * That means that this tool will have only Marker and Link inline tools
+     * If 'true', the common settings will be used.
+     * If 'false' or omitted, the Inline Toolbar wont be shown
+     */
+    inlineToolbar: ["marker", "link", "image", "bold", "italic"],
     config: {
-      defaultLevel: 2,
-      placeholder: "Заголовок",
-      levels: [2, 3],
+      placeholder: "Header",
+    },
+    shortcut: "CMD+SHIFT+H",
+  },
+  embed: {
+    class: Embed,
+    config: {
+      services: {
+        youtube: true,
+        rutube: {
+          regex:
+            /[http|https]+:\/\/(?:www\.|)rutube\.ru\/video\/([a-zA-Z0-9_\-]+)\//i,
+          embedUrl: "https://rutube.ru/play/embed/<%= remote_id %>",
+          html: '<iframe style="width:100%;" height="320" frameborder="0" allowfullscreen></iframe>',
+          height: 320,
+          width: 580,
+        },
+        vk: true,
+      },
     },
   },
   quote: {

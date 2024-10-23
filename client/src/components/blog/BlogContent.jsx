@@ -1,3 +1,5 @@
+import ReactPlayer from "react-player";
+
 const Img = ({ url, alt, caption }) => {
   return (
     <div>
@@ -73,15 +75,44 @@ const BlogContent = ({ block }) => {
       <Img url={data.file.url} alt={data.caption} caption={data.caption} />
     );
   }
+  if (type == "embed" && data.service == "youtube") {
+    return (
+      <div className=" xs:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto flex flex-col items-center justify-center">
+        <ReactPlayer
+          allowFullScreen
+          className="max-w-full mx-auto"
+          url={data?.embed}
+        />
+        <p className="text-center text-sm text-gray-600  ">{data.caption}</p>
+      </div>
+    );
+  }
+  if (type == "embed" && data?.service == "rutube") {
+    return (
+      <div className=" xs:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto flex flex-col items-center justify-center">
+        <iframe
+          className="max-w-3xl xs:max-w-[400px] md:max-w-full"
+          title="rutube"
+          width="600"
+          height="300"
+          src={data.embed}
+          frameBorder="0"
+          allow="clipboard-write; autoplay"
+          webkitAllowFullScreen
+          mozallowfullscreen
+          allowFullScreen
+        ></iframe>
+        <p className="text-center text-sm text-gray-600  ">{data.caption}</p>
+      </div>
+    );
+  }
   if (type == "quote") {
     return <Quote quote={data.text} caption={data.caption} />;
   }
   if (type == "list") {
     return <List style={data.style} items={data.items} />;
   }
-  if (type == "embed") {
-    return <div dangerouslySetInnerHTML={{ __html: data.html }}></div>;
-  }
+
   if (type == "delimiter") {
     return <hr />;
   }
@@ -90,6 +121,18 @@ const BlogContent = ({ block }) => {
   }
   if (type == "table") {
     return <div dangerouslySetInnerHTML={{ __html: data.html }}></div>;
+  }
+  if (type == "link") {
+    return (
+      <a
+        href={data?.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-purple-600 w-full text-center flex justify-center hover:underline hover:text-blue-400"
+      >
+        {data?.link}
+      </a>
+    );
   }
 };
 

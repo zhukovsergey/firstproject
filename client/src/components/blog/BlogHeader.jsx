@@ -129,6 +129,11 @@ const BlogHeader = () => {
             placeholder="что искать..."
             className="md:w-full sm:w-[200px]"
             onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                searcheHandler(e);
+              }
+            }}
             value={searchValue}
           />
           <Button type="submit" onClick={(e) => searcheHandler(e)}>

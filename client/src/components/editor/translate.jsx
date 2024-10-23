@@ -93,13 +93,26 @@ export const translate = {
           heading: "Заголовок",
           quote: "Цитата",
           code: "Код",
+          toggler: {
+            "Click to tune": "Нажмите, чтобы настроить",
+            "or drag to move": "или перетащите",
+          },
           delimiter: "Разделитель",
           image: "Изображение",
           Convert: "Преобразовать",
         },
+        toolbar: {
+          toolbox: {
+            Add: "Добавить",
+          },
+        },
         inlineToolbar: {
           converter: {
             "Convert to": "Конвертировать в",
+          },
+          popover: {
+            Filter: "Поиск",
+            "Nothing found": "Ничего не найдено",
           },
           buttons: {
             link: "Ссылка",
@@ -131,6 +144,9 @@ export const translate = {
       },
       toggleBlockType: {
         "Toggle block type": "Переключить тип блока",
+      },
+      filter: {
+        Filter: "Поиск",
       },
     },
   },

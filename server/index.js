@@ -140,6 +140,15 @@ app.get("/sitemap.xml", async function (req, res) {
   res.send(sitemapOutput.toString());
 });
 
+app.get("/api/parse", (req, res) => {
+  console.log(req.query.url);
+  res.json({
+    success: "1",
+    link: req.query.url,
+    meta: "  ",
+  });
+});
+
 app.get("/robots.txt", (req, res) => {
   res.set("Content-Type", "text/plain");
   res.send(`

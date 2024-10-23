@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import BlogCard from "@/components/blog/BlogCard";
 import CarouselComponent from "@/components/blog/Carousel";
@@ -11,6 +11,7 @@ import CategoryCard from "@/components/blog/CategoryCard";
 import { TbCategory2 } from "react-icons/tb";
 
 const HomePage = () => {
+  const [loading, setLoading] = useState(false);
   const [blogs, setBlogs] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -26,10 +27,12 @@ const HomePage = () => {
   };
   useEffect(() => {
     const getBlogs = async () => {
+      setLoading(true);
       const res = await axios.get("http://localhost:3000/api/blog/getall");
       console.log(res.data);
 
       setBlogs(res.data.blogs);
+      setLoading(false);
     };
     getAllCategories();
     getBlogs();
@@ -54,6 +57,14 @@ const HomePage = () => {
         <meta property="og:site_name" content={"Zhukovka"} />
       </Helmet>
       <AnimationWrapper>
+        {loading ? (
+          <div className="flex justify-center items-center h-screen">
+            <div
+              className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
+              role="status"
+            ></div>
+          </div>
+        ) : null}
         <div className="flex flex-col flex-wrap gap-4 items-center justify-start w-full">
           <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full ">
             {/*Топ статей*/}
@@ -78,8 +89,10 @@ const HomePage = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 items-center sm:justify-center md:justify-start">
-            {blogs.map((blog) => (
-              <BlogCard blog={blog} key={blog._id} />
+            {blogs.map((blog, index) => (
+              <Fragment key={blog._id}>
+                {index < 12 ? <BlogCard blog={blog} key={blog._id} /> : null}
+              </Fragment>
             ))}
           </div>
         </div>

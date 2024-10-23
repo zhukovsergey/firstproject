@@ -109,9 +109,12 @@
 .ce-block__content, .ce-toolbar__content{
   max-width: 900px;
 }
-
+.codex-editor__redactor {
+  margin-left: 10px;
+}
 .cdx-settings-button[data-tune='withBorder'],
 .cdx-settings-button[data-tune='withBackground'],
 .cdx-settings-button[data-tune='stretched'] {
 display: none;
 }
+

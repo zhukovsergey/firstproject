@@ -26,7 +26,7 @@ const BlogPage = () => {
         const res = await axios.get(
           `http://localhost:3000/api/blog/${params.slug}`
         );
-
+        console.log(res.data.blog);
         setBlog(res.data.blog);
         setContent(res.data.blog.content);
         setComments(res.data.blog.comments);

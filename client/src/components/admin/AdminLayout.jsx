@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import { useRecoilState } from "recoil";
@@ -16,7 +15,7 @@ const AdminLayout = () => {
   }
   return (
     <div className="min-h-screen flex flex-wrap  ">
-      <div className="w-[230px] hidden md:block">
+      <div className="w-[230px] hidden md:block ">
         <AdminSidebar />
       </div>
 

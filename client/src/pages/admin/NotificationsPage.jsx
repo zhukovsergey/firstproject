@@ -79,6 +79,7 @@ const NotificationsPage = () => {
               {notification.comment.comment.length > 25 ? "..." : ""}
             </p>
           </div>
+              
         </div>
       ))}
     </div>
