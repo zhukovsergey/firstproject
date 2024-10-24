@@ -7,10 +7,12 @@ import {
   getAllBlogs,
   getBlogByCategory,
   getBlogBySlug,
+  getSimilarBlogs,
   likePost,
   newblog,
   searchBlogs,
   topBlogs,
+  topCommentsBlogs,
 } from "../controllers/blog.js";
 import upload from "../middlewares/multer.js";
 import isAuthenticated from "./../middlewares/isAuthenticated.js";
@@ -21,7 +23,9 @@ router.post("/newblog", upload.single("image"), isAuthenticated, newblog);
 router.put("/editblog", upload.single("image"), isAuthenticated, editblog);
 
 router.get("/getall", getAllBlogs);
+router.get("/similar/:category", getSimilarBlogs);
 router.get("/top", topBlogs);
+router.get("/topcomments", topCommentsBlogs);
 
 router.get("/:slug", getBlogBySlug);
 router.delete("/delete/:slug", isAuthenticated, deleteBlog);

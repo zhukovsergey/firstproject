@@ -22,7 +22,9 @@ import {
 import TimeAgo from "react-timeago";
 import frenchStrings from "react-timeago/lib/language-strings/ru";
 import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
-import SocialPanel from "./SocialPanel";
+
+import PropTypes from "prop-types";
+
 const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
   const formatter = buildFormatter(frenchStrings);
   const [showEdit, setShowEdit] = useState(false);
@@ -95,7 +97,7 @@ const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
           <div className="absolute top-1 left-[80px] flex gap-6 items-center">
             <div className=" ">
               <RiDeleteBinLine
-                onClick={(e) => setShowDeleteDialog(true)}
+                onClick={() => setShowDeleteDialog(true)}
                 className="text-xl cursor-pointer text-red-600 hover:scale-110"
               />
             </div>
@@ -127,7 +129,7 @@ const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
             <img
               src={`http://localhost:3000` + blog?.image}
               alt={blog?.title}
-              className="object-cover mx-auto min-h-[350px] max-h-[350px] rounded-md hover:scale-105 transition-all duration-300"
+              className="object-cover mx-auto h-52 w-full rounded-md hover:scale-105 transition-all duration-300"
             />
           </CardContent>
           <CardFooter className="flex flex-col">
@@ -154,9 +156,9 @@ const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
                 <FaRegComments />{" "}
                 <span className="text-sm">{blog?.comments.length}</span>
               </div>
-              <div class="flex items-center">
+              <div className="flex items-center">
                 <svg
-                  class="w-4 h-4 text-yellow-300 me-1"
+                  className="w-4 h-4 text-purple-400 me-1"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -164,7 +166,7 @@ const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
                 >
                   <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                 </svg>
-                <p class="ms-2 text-sm font-bold text-gray-900 dark:text-white">
+                <p className="ms-2 text-sm font-bold text-gray-900 dark:text-white">
                   {Math.round(
                     (5 * (blog.likes.length + 5)) /
                       (blog.dislikes.length + blog.likes.length + 5)
@@ -214,6 +216,13 @@ const BlogCard = ({ blog, admin, setBlogsFromPage, blogsFrompage }) => {
       )}
     </>
   );
+};
+
+BlogCard.propTypes = {
+  blog: PropTypes.object,
+  admin: PropTypes.bool,
+  setBlogsFromPage: PropTypes.func,
+  blogsFrompage: PropTypes.array,
 };
 
 export default BlogCard;

@@ -8,6 +8,7 @@ import SocialPanel from "@/components/blog/SocialPanel";
 import AnimationWrapper from "@/common/page-animation";
 import Comments from "@/components/blog/Comments";
 import { Skeleton } from "@/components/ui/skeleton";
+import SimilarBlogs from "@/components/blog/SimilarBlogs";
 
 const BlogPage = () => {
   const box = useRef();
@@ -27,7 +28,7 @@ const BlogPage = () => {
         const res = await axios.get(
           `http://localhost:3000/api/blog/${params.slug}`
         );
-        console.log(res.data.blog);
+
         setBlog(res.data.blog);
         setContent(res.data.blog.content);
         setComments(res.data.blog.comments);
@@ -112,6 +113,11 @@ const BlogPage = () => {
         <div className="flex flex-col mx-[200px] md:mx-[80px] sm:mx-[20px] lg:mx-[100px]">
           <Comments comments={comments} setComments={setComments} />
         </div>
+        {/*  похожие статьи  */}
+        <div>
+          <SimilarBlogs blog={blog} />
+        </div>
+        {/*  похожие статьи  */}
       </AnimationWrapper>
     </div>
   );

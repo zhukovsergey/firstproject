@@ -4,10 +4,12 @@ import { Outlet } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Footer from "./Footer";
 import AnimationWrapper from "@/common/page-animation";
+import ScrollToTop from "@/helpers/scrollToTop";
 
 const BlogLayout = () => {
   return (
     <AnimationWrapper>
+      <ScrollToTop />
       <div className=" min-h-screen flex flex-col">
         {/* Header */}
         <div className="">

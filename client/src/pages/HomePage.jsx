@@ -9,6 +9,8 @@ import Helmet from "react-helmet";
 import AnimationWrapper from "@/common/page-animation";
 import CategoryCard from "@/components/blog/CategoryCard";
 import { TbCategory2 } from "react-icons/tb";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import TopCommentsBlogs from "@/components/blog/TopCommentsBlogs";
 
 const HomePage = () => {
   const [loading, setLoading] = useState(false);
@@ -66,12 +68,33 @@ const HomePage = () => {
           </div>
         ) : null}
         <div className="flex flex-col flex-wrap gap-4 items-center justify-start w-full">
-          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full ">
+          <div className="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full ">
             {/*Топ статей*/}
-            <div className="mx-2">
-              <RatingBlogs />
+            <div className="mx-2 md:col-span-2 lg:col-span-1 w-full text-center">
+              <Tabs defaultValue="toprating" className="">
+                <TabsList>
+                  <TabsTrigger
+                    value="toprating"
+                    className="text-purple-400 font-semibold"
+                  >
+                    Топ по рейтингу
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="topcomments"
+                    className="text-purple-400 font-semibold"
+                  >
+                    Топ по комментариям
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="toprating">
+                  <RatingBlogs />
+                </TabsContent>
+                <TabsContent value="topcomments">
+                  <TopCommentsBlogs />
+                </TabsContent>
+              </Tabs>
             </div>
-            <div className="col-span-2">
+            <div className="lg:col-span-2 md:col-span-2 col-span-1">
               <CarouselComponent blogs={blogs} />
             </div>
           </div>

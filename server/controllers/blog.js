@@ -102,6 +102,45 @@ export const topBlogs = async (req, res) => {
   }
 };
 
+export const topCommentsBlogs = async (req, res) => {
+  try {
+    const topCommentsBlogs = await Blog.aggregate([
+      { $unwind: "$comments" },
+      {
+        $group: {
+          _id: "$_id",
+          title: { $first: "$title" },
+          slug: { $first: "$slug" },
+          description: { $first: "$description" },
+          image: { $first: "$image" },
+          category: { $first: "$category" },
+          views: { $first: "$views" },
+          comments: { $push: "$comments" },
+          length: { $sum: 1 },
+        },
+      },
+      { $sort: { length: -1 } },
+      { $limit: 5 },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          slug: 1,
+          description: 1,
+          image: 1,
+          category: 1,
+          views: 1,
+          comments: 1,
+          length: 1,
+        },
+      },
+    ]);
+    res.status(200).json({ success: true, topCommentsBlogs });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getBlogBySlug = async (req, res) => {
   try {
     const blog = await Blog.findOne({ slug: req.params.slug }).populate({
@@ -333,4 +372,19 @@ export const getBlogByCategory = async (req, res) => {
     "category"
   );
   res.status(200).json({ success: true, blogs, category });
+};
+
+export const getSimilarBlogs = async (req, res) => {
+  try {
+    const similarCategory = req.params.category;
+    console.log(similarCategory);
+    const category = await Category.findOne({ _id: similarCategory });
+    const blogs = await Blog.find({ category: category._id })
+      .populate("category")
+      .limit(4);
+    console.log(blogs);
+    res.status(200).json({ success: true, blogs });
+  } catch (error) {
+    console.log(error);
+  }
 };

@@ -98,8 +98,6 @@ const BlogContent = ({ block }) => {
           src={data.embed}
           frameBorder="0"
           allow="clipboard-write; autoplay"
-          webkitAllowFullScreen
-          mozallowfullscreen
           allowFullScreen
         ></iframe>
         <p className="text-center text-sm text-gray-600  ">{data.caption}</p>

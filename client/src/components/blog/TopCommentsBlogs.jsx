@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import BlogCard from "./BlogCard";
+
 import { Link } from "react-router-dom";
 import { FaChartLine } from "react-icons/fa";
 
-const RatingBlogs = () => {
+const TopCommentsBlogs = () => {
   const [topBlogs, setTopBlogs] = useState([]);
 
   useEffect(() => {
     const getTopBlogs = async () => {
-      const res = await axios.get("http://localhost:3000/api/blog/top");
-      setTopBlogs(res.data.topBlogs);
+      const res = await axios.get("http://localhost:3000/api/blog/topcomments");
+      setTopBlogs(res.data.topCommentsBlogs);
       console.log(res);
     };
     getTopBlogs();
@@ -19,7 +19,7 @@ const RatingBlogs = () => {
   return (
     <div>
       <h1 className="text-gray-500 text-center font-bold text-xl mb-4  inline-flex justify-center gap-2 items-center">
-        Топ статей по рейтингу на основе лайков и дизлайков <FaChartLine />
+        Самые комментируемые статьи <FaChartLine />
       </h1>
       <div className="flex-col gap-4 items-center justify-start">
         {topBlogs.map((blog, index) => (
@@ -59,4 +59,4 @@ const RatingBlogs = () => {
   );
 };
 
-export default RatingBlogs;
+export default TopCommentsBlogs;
