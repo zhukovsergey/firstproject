@@ -23,7 +23,7 @@ router.post("/newblog", upload.single("image"), isAuthenticated, newblog);
 router.put("/editblog", upload.single("image"), isAuthenticated, editblog);
 
 router.get("/getall", getAllBlogs);
-router.get("/similar/:category", getSimilarBlogs);
+router.post("/similar/:category", getSimilarBlogs);
 router.get("/top", topBlogs);
 router.get("/topcomments", topCommentsBlogs);
 

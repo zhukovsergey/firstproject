@@ -4,6 +4,7 @@ import axios from "axios";
 import BlogCard from "@/components/blog/BlogCard";
 import { Helmet } from "react-helmet";
 import AnimationWrapper from "@/common/page-animation";
+import BreadCrumbs from "@/helpers/breadCrumbs";
 
 const CategoryPage = () => {
   const params = useParams();
@@ -32,7 +33,11 @@ const CategoryPage = () => {
   return (
     <>
       <Helmet>
-        <title>{category?.name + " | Zhukovka"}</title>
+        <title>
+          {"Категория - " +
+            category?.name?.toLowerCase() +
+            " | Zhukovka - все о дорамах"}
+        </title>
         <meta name="description" content={category?.name} />
         <meta property="og:title" content={category?.name} />
         <meta property="og:description" content={category?.name} />
@@ -44,6 +49,7 @@ const CategoryPage = () => {
         <meta property="og:site_name" content={"Zhukovka"} />
       </Helmet>
       <AnimationWrapper>
+        <BreadCrumbs title={category?.name} />
         <div className="relative">
           <h1 className="text-center my-2 mb-6 text-lg">{category?.name}</h1>
           {blogs.length > 0 ? (

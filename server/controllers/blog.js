@@ -375,14 +375,19 @@ export const getBlogByCategory = async (req, res) => {
 };
 
 export const getSimilarBlogs = async (req, res) => {
+  console.log(req.body);
   try {
+    const blogId = req.body.blogId;
     const similarCategory = req.params.category;
-    console.log(similarCategory);
-    const category = await Category.findOne({ _id: similarCategory });
-    const blogs = await Blog.find({ category: category._id })
+    const category = await Category.findById(similarCategory);
+    const blogs = await Blog.find({
+      category: category._id,
+      _id: { $ne: blogId },
+    })
       .populate("category")
-      .limit(4);
-    console.log(blogs);
+      .limit(4)
+      .sort({ createdAt: -1 });
+
     res.status(200).json({ success: true, blogs });
   } catch (error) {
     console.log(error);

@@ -6,26 +6,31 @@ import BlogCard from "./BlogCard";
 const SimilarBlogs = ({ blog }) => {
   const [simBlogs, setSimBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
-  const getSimilarBlogs = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(
-        "http://localhost:3000/api/blog/similar/" + blog.category
-      );
 
-      setSimBlogs(res.data.blogs);
-      setLoading(false);
-
-      console.log(res.data.blogs);
-    } catch (error) {
-      console.log(error);
-
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    getSimilarBlogs();
-  }, [blog]);
+    const getSimilarBlogs = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.post(
+          `http://localhost:3000/api/blog/similar/${blog.category}`,
+          {
+            blogId: blog._id,
+          }
+        );
+
+        setSimBlogs(res.data.blogs);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+
+        setLoading(false);
+      }
+    };
+
+    if (blog?.category) {
+      getSimilarBlogs();
+    }
+  }, []);
   return (
     <div>
       <h3 className="text-center my-2">Советуем прочитать</h3>

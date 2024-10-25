@@ -68,9 +68,9 @@ const HomePage = () => {
           </div>
         ) : null}
         <div className="flex flex-col flex-wrap gap-4 items-center justify-start w-full">
-          <div className="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full ">
+          <div className="grid grid-cols-3 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full ">
             {/*Топ статей*/}
-            <div className="mx-2 md:col-span-2 lg:col-span-1 w-full text-center">
+            <div className="mx-2 md:col-span-2 lg:col-span-1 col-span-1 w-full text-center">
               <Tabs defaultValue="toprating" className="">
                 <TabsList>
                   <TabsTrigger

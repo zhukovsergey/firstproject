@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import BlogContent from "@/components/blog/BlogContent";
 import Helmet from "react-helmet";
@@ -9,6 +9,8 @@ import AnimationWrapper from "@/common/page-animation";
 import Comments from "@/components/blog/Comments";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimilarBlogs from "@/components/blog/SimilarBlogs";
+import useBreadcrumbs from "use-react-router-breadcrumbs";
+import BreadCrumbs from "@/helpers/breadCrumbs";
 
 const BlogPage = () => {
   const box = useRef();
@@ -62,6 +64,7 @@ const BlogPage = () => {
         <meta property="og:site_name" content={"Zhukovka"} />
       </Helmet>
       <AnimationWrapper>
+        <BreadCrumbs title={blog?.title} />
         {loading && (
           <div className="flex flex-col items-center justify-center space-y-3 ">
             <Skeleton className="h-4 w-[250px]" />
@@ -94,7 +97,6 @@ const BlogPage = () => {
             ))}
           </div>
         )}
-
         {!loading && (
           <div className="mx-[50px] md:mx-[50px] sm:mx-[20px] lg:mx-[90px] ">
             <SocialPanel
@@ -106,17 +108,16 @@ const BlogPage = () => {
           </div>
         )}
         {!loading && <h3 className="text-center">Комментарии</h3>}
-
         {comments.length == 0 && (
-          <div className="text-center mt-4 text-gray-400">Нет комментариев</div>
+          <div className="text-center mt-4 text-gray-400">
+            Нет комментариев 😟
+          </div>
         )}
         <div className="flex flex-col mx-[200px] md:mx-[80px] sm:mx-[20px] lg:mx-[100px]">
           <Comments comments={comments} setComments={setComments} />
         </div>
         {/*  похожие статьи  */}
-        <div>
-          <SimilarBlogs blog={blog} />
-        </div>
+        <div>{blog?.category && <SimilarBlogs blog={blog} />}</div>
         {/*  похожие статьи  */}
       </AnimationWrapper>
     </div>

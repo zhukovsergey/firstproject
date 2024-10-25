@@ -53,7 +53,8 @@
     "recoil-persist": "^5.1.0",
     "recoilize": "^3.2.0",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "use-react-router-breadcrumbs": "^4.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
