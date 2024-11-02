@@ -86,6 +86,10 @@
   #textEditor h3, h3 {
       @apply  text-2xl leading-loose max-md:text-2xl max-md:leading-normal !important;
   }
+  #textEditor h4, h4 {
+    @apply  text-xl leading-loose max-md:text-2xl max-md:leading-normal !important;
+}
+
 
  
 
@@ -106,9 +110,14 @@
   }
 }
 
-.ce-block__content, .ce-toolbar__content{
-  max-width: 900px;
+.ce-block__content  {
+  width: 90% !important;
+  max-width: 100% !important;
 }
+.ce-toolbar__content {
+  max-width: 100% !important;
+}
+
 .codex-editor__redactor {
   margin-left: 10px;
 }
@@ -116,5 +125,17 @@
 .cdx-settings-button[data-tune='withBackground'],
 .cdx-settings-button[data-tune='stretched'] {
 display: none;
+}
+
+.ce-toolbar__plus {
+  position: relative;   
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5e8e8;
+  border-radius: 50%;
+  cursor: pointer;  
 }
 

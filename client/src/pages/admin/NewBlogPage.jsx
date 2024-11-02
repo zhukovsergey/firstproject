@@ -163,7 +163,12 @@ const NewBlogPage = () => {
             placeholder="Короткое описание"
           />
         </div>
-        <div id="editor" className="font-gelasio min-h-screen bg-white"></div>
+
+        <div
+          id="editor"
+          className="font-gelasio min-h-screen   bg-white p-2"
+        ></div>
+
         <Button onClick={handlePublishEvent}>Опубликовать</Button>
       </div>
     </>

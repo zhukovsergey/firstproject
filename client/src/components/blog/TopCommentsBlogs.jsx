@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 import { Link } from "react-router-dom";
 import { FaChartLine } from "react-icons/fa";
@@ -17,7 +18,11 @@ const TopCommentsBlogs = () => {
   }, []);
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.2 }}
+    >
       <h1 className="text-gray-500 text-center font-bold text-xl mb-4  inline-flex justify-center gap-2 items-center">
         Самые комментируемые статьи <FaChartLine />
       </h1>
@@ -55,7 +60,7 @@ const TopCommentsBlogs = () => {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

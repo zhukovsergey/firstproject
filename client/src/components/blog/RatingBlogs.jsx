@@ -3,6 +3,7 @@ import axios from "axios";
 import BlogCard from "./BlogCard";
 import { Link } from "react-router-dom";
 import { FaChartLine } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const RatingBlogs = () => {
   const [topBlogs, setTopBlogs] = useState([]);
@@ -17,7 +18,11 @@ const RatingBlogs = () => {
   }, []);
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.2 }}
+    >
       <h1 className="text-gray-500 text-center font-bold text-xl mb-4  inline-flex justify-center gap-2 items-center">
         Топ статей по рейтингу на основе лайков и дизлайков <FaChartLine />
       </h1>
@@ -55,7 +60,7 @@ const RatingBlogs = () => {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

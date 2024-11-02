@@ -48,16 +48,14 @@ export const tools = {
   },
   header: {
     class: Header,
-    /**
-     * This property will override the common settings
-     * That means that this tool will have only Marker and Link inline tools
-     * If 'true', the common settings will be used.
-     * If 'false' or omitted, the Inline Toolbar wont be shown
-     */
-    inlineToolbar: ["marker", "link", "image", "bold", "italic"],
+    inlineToolbar: true,
+
     config: {
-      placeholder: "Header",
+      placeholder: "Заголовок",
+      levels: [2, 3, 4],
+      defaultLevel: 2,
     },
+
     shortcut: "CMD+SHIFT+H",
   },
   embed: {

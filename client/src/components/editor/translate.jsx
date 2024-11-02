@@ -1,153 +1,130 @@
 export const translate = {
   messages: {
+    /**
+     * Other below: translation of different UI components of the editor.js core
+     */
+    ui: {
+      blockTunes: {
+        toggler: {
+          "Click to tune": "Нажмите, чтобы настроить",
+          "or drag to move": "или перетащите",
+        },
+      },
+      inlineToolbar: {
+        converter: {
+          "Convert to": "Конвертировать в",
+        },
+      },
+      toolbar: {
+        toolbox: {
+          Add: "Добавить",
+        },
+      },
+      popover: {
+        Filter: "Поиск",
+        "Nothing found": "Ничего не найдено",
+      },
+    },
+
+    /**
+     * Section for translation Tool Names: both block and inline tools
+     */
+    toolNames: {
+      Text: "Параграф",
+      Heading: "Заголовок",
+      List: "Список",
+      Warning: "Примечание",
+      Checklist: "Чеклист",
+      Quote: "Цитата",
+      Code: "Код",
+      Delimiter: "Разделитель",
+      "Raw HTML": "HTML-фрагмент",
+      Table: "Таблица",
+      Link: "Ссылка",
+      Marker: "Маркер",
+      Bold: "Полужирный",
+      Italic: "Курсив",
+      InlineCode: "Моноширинный",
+      Image: "Картинка",
+    },
+
+    /**
+     * Section for passing translations to the external tools classes
+     */
     tools: {
+      /**
+       * Each subsection is the i18n dictionary that will be passed to the corresponded plugin
+       * The name of a plugin should be equal the name you specify in the 'tool' section for that plugin
+       */
       warning: {
+        // <-- 'Warning' tool will accept this dictionary section
         Title: "Название",
         Message: "Сообщение",
       },
+
+      /**
+       * Link is the internal Inline Tool
+       */
       link: {
-        Link: "Вставьте ссылку",
+        "Add a link": "Вставьте ссылку",
       },
-      list: {
-        "Add a list": "Вставьте список",
-        "Change list": "Изменить список",
-        "Remove list": "Удалить список",
-        "Upload list": "Загрузить список",
+      /**
+       * The "stub" is an internal block tool, used to fit blocks that does not have the corresponded plugin
+       */
+      stub: {
+        "The block can not be displayed correctly.":
+          "Блок не может быть отображен",
       },
       image: {
-        "Add an image": "Вставьте изображение",
-        "Change image": "Изменить изображение",
-        "Remove image": "Удалить изображение",
-        "Upload image": "Загрузить изображение",
-        "Select an Image": "Загрузить изображение",
-        "With border": "С рамкой",
-        "Stretch image": "Растянуть изображение",
-        "With background": "С фоном",
-        Caption: "Описание фото",
+        Caption: "Подпись",
+        "Select an Image": "Выберите файл",
+        "With border": "Добавить рамку",
+        "Stretch image": "Растянуть",
+        "With background": "Добавить подложку",
       },
-      quote: {
-        "Add a quote": "Вставьте цитату",
-        "Change quote": "Изменить цитату",
-        "Remove quote": "Удалить цитату",
-        "Upload quote": "Загрузить цитату",
-        "Select a Quote": "Выберите цитату",
-        "Quote text": "Текст цитаты",
+      code: {
+        "Enter a code": "Код",
       },
-    },
-    toolNames: {
-      "Convert to": "Конвертировать в",
-      Heading: "Заголовок",
-      Header: "Заголовок",
-      Text: "Параграф",
-      List: "Список",
-      Warning: "Предупреждение",
-      Quote: "Цитата",
-      Marker: "Маркер",
-      Code: "Код",
-      Link: "Ссылка",
-      Image: "Изображение",
-      Table: "Таблица",
-      Delimiter: "Разделитель",
-      Video: "Видео",
-      InlineCode: "Цитата",
-      Italic: "Курсив",
-      Bold: "Жирный",
-      Strikethrough: "Зачеркнутое",
-      Subscript: "Подстрочный",
-      Superscript: "Надстрочный",
-      Underline: "Подчеркнутый",
-      TextAlign: "Выравнивание текста",
-      AlignLeft: "Выравнивание по левому краю",
-      AlignCenter: "Выравнивание по центру",
-      AlignRight: "Выравнивание по правому краю",
-      AlignJustify: "Выравнивание по ширине",
-      Indent: "Увеличить отступ",
-      Outdent: "Уменьшить отступ",
-      TableHeader: "Заголовок таблицы",
-      TableBody: "Тело таблицы",
-      HorizontalRule: "Горизонтальная линия",
-      Fullscreen: "Полноэкранный режим",
-      CodeBlock: "Код",
-      Preview: "Предпросмотр",
-      HTML: "HTML",
-      Save: "Сохранить",
-    },
-    ui: {
-      toolbar: {
-        buttons: {
-          "Heading 1": "Заголовок 1",
-          "header-2": "Заголовок 2",
-          "header-3": "Заголовок 3",
-          "header-4": "Заголовок 4",
-          "header-5": "Заголовок 5",
-          "header-6": "Заголовок 6",
-          blockquote: "Цитата",
-          "unordered-list": "Список",
-          "ordered-list": "Нумерованный список",
-          link: "Ссылка",
-          code: "Код",
-        },
-
-        blockTunes: {
-          spoiler: "Спойлер",
-          heading: "Заголовок",
-          quote: "Цитата",
-          code: "Код",
-          toggler: {
-            "Click to tune": "Нажмите, чтобы настроить",
-            "or drag to move": "или перетащите",
-          },
-          delimiter: "Разделитель",
-          image: "Изображение",
-          Convert: "Преобразовать",
-        },
-        toolbar: {
-          toolbox: {
-            Add: "Добавить",
-          },
-        },
-        inlineToolbar: {
-          converter: {
-            "Convert to": "Конвертировать в",
-          },
-          popover: {
-            Filter: "Поиск",
-            "Nothing found": "Ничего не найдено",
-          },
-          buttons: {
-            link: "Ссылка",
-            code: "Код",
-          },
-        },
+      linkTool: {
+        Link: "Ссылка",
+        "Couldn't fetch the link data": "Не удалось получить данные",
+        "Couldn't get this link data, try the other one":
+          "Не удалось получить данные по ссылке, попробуйте другую",
+        "Wrong response format from the server": "Неполадки на сервере",
+      },
+      header: {
+        Header: "Заголовок",
+        "Enter a header": "Заголовок",
+      },
+      paragraph: {
+        "Enter something": "Введите текст",
+      },
+      list: {
+        Ordered: "Нумерованный",
+        Unordered: "Маркированный",
       },
     },
 
+    /**
+     * Section allows to translate Block Tunes
+     */
     blockTunes: {
-      spoiler: {
-        "Hide content": "Содержание скрыто",
-        "Show content": "Скрыть содержание",
-      },
-
-      Heading: "Заголовок",
+      /**
+       * Each subsection is the i18n dictionary that will be passed to the corresponded Block Tune plugin
+       * The name of a plugin should be equal the name you specify in the 'tunes' section for that plugin
+       *
+       * Also, there are few internal block tunes: "delete", "moveUp" and "moveDown"
+       */
       delete: {
         Delete: "Удалить",
       },
-
       moveUp: {
         "Move up": "Переместить вверх",
       },
       moveDown: {
         "Move down": "Переместить вниз",
       },
-      duplicate: {
-        Duplicate: "Дублировать",
-      },
-      toggleBlockType: {
-        "Toggle block type": "Переключить тип блока",
-      },
-      filter: {
-        Filter: "Поиск",
-      },
+      "Click to delete": "Удалить фото",
     },
   },
 };

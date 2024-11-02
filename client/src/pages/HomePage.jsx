@@ -4,6 +4,7 @@ import BlogCard from "@/components/blog/BlogCard";
 import CarouselComponent from "@/components/blog/Carousel";
 import RatingBlogs from "@/components/blog/RatingBlogs";
 import logo from "../assets/imgs/logo.png";
+import { motion } from "framer-motion";
 
 import Helmet from "react-helmet";
 import AnimationWrapper from "@/common/page-animation";
@@ -105,17 +106,27 @@ const HomePage = () => {
               </span>
               <span className="text-gray-500">Категории</span>
             </div>
-            <div className="flex flex-wrap gap-4 my-4 text-gray-500">
+            <motion.div
+              className="flex flex-wrap gap-4 my-4 text-gray-500"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.3 }}
+            >
               {categories.map((category) => (
                 <CategoryCard category={category} key={category._id} />
               ))}
-            </div>
+            </motion.div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 items-center sm:justify-center md:justify-start">
             {blogs.map((blog, index) => (
-              <Fragment key={blog._id}>
+              <motion.Fragment
+                key={blog._id}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.2 * index + 0.1 }}
+              >
                 {index < 12 ? <BlogCard blog={blog} key={blog._id} /> : null}
-              </Fragment>
+              </motion.Fragment>
             ))}
           </div>
         </div>
